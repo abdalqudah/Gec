@@ -5,12 +5,22 @@ const { syncSystemRoles } = require('./rbac/rbac.service');
 const { hashPassword } = require('./auth/auth.service');
 
 async function ensureAdmin() {
-  const { email, password, name } = config.bootstrapAdmin;
-  if (!email) return;
+  const { email, password, name, reset } = config.bootstrapAdmin;
+  if (!email) { console.warn('[bootstrap] ADMIN_EMAIL is not set; no admin created'); return; } // eslint-disable-line no-console
+  if (password.length < 10) { console.warn('[bootstrap] ADMIN_PASSWORD must be at least 10 characters; no admin created or reset'); return; } // eslint-disable-line no-console
   const existing = await knex('users').where({ kind: 'staff', email }).first();
-  if (existing) return; // never overwrite an existing account's password
-  if (password.length < 10) { console.warn('[bootstrap] ADMIN_PASSWORD must be at least 10 characters; no admin created'); return; } // eslint-disable-line no-console
   const role = await knex('roles').where({ key: 'super_admin' }).first();
+  if (existing) {
+    if (!reset) return; // never overwrite an existing account's password unless ADMIN_RESET=true
+    // Recovery from the hosting panel: new password, unlocked, active, Super Admin.
+    await knex('users').where({ id: existing.id }).update({ password_hash: await hashPassword(password), status: 'active', failed_logins: 0, locked_until: null, must_change_password: false, password_changed_at: new Date() });
+    const emp = await knex('employees').where({ user_id: existing.id }).first('id');
+    if (emp) await knex('employees').where({ id: emp.id }).update({ role_id: role.id });
+    else await knex('employees').insert({ user_id: existing.id, role_id: role.id, job_title: 'Administrator', is_counsellor: false });
+    await require('../core/audit').record({ userId: null }, 'auth.admin_reset_at_startup', { entityType: 'user', entityId: existing.id }); // eslint-disable-line global-require
+    console.warn(`[bootstrap] ADMIN_RESET: password reset for ${email}. Remove ADMIN_RESET from the environment now.`); // eslint-disable-line no-console
+    return;
+  }
   await knex.transaction(async (trx) => {
     const [userId] = await trx('users').insert({ kind: 'staff', email, name, password_hash: await hashPassword(password), status: 'active', must_change_password: false });
     const branch = await trx('branches').orderBy('id').first();

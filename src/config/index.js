@@ -68,6 +68,8 @@ module.exports = {
     email: (process.env.ADMIN_EMAIL || '').trim().toLowerCase(),
     password: process.env.ADMIN_PASSWORD || '',
     name: process.env.ADMIN_NAME || 'Administrator',
+    // ADMIN_RESET=true: at start-up, set ADMIN_PASSWORD on the ADMIN_EMAIL account (and unlock it). Remove afterwards.
+    reset: process.env.ADMIN_RESET === 'true',
   },
   smtp: {
     host: process.env.SMTP_HOST || '',
