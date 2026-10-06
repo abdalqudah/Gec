@@ -1,0 +1,29 @@
+<div class="page-head"><div><h1><%= title %></h1><p class="lead"><%= t('demo.lead') %></p></div></div>
+
+<section class="card mb4">
+  <div class="spread wrap-gap"><h2 class="mb0"><%= d.total ? t('demo.loaded_title', { n: d.total }) : t('demo.empty_title') %></h2><span class="chip <%= d.total ? 'brand' : '' %>"><%= d.total ? t('demo.on') : t('demo.off') %></span></div>
+  <% if (d.total) { %>
+  <div class="cluster small mt4"><% Object.keys(d.counts).filter(function (k) { return d.counts[k]; }).forEach(function (k) { %><span class="chip"><%= t('demo.t.' + k) %> · <strong><%= d.counts[k] %></strong></span><% }) %></div>
+  <% } %>
+  <div class="cluster mt4">
+    <form method="post" action="/staff/system/demo/load"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><input type="hidden" name="images" value="1"><button class="btn primary" type="submit"><%- icon('database') %><%= d.total ? t('demo.load_again') : t('demo.load') %></button></form>
+    <% if (d.total) { %><form method="post" action="/staff/system/demo/remove" data-confirm="<%= t('demo.remove_confirm') %>"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="btn danger" type="submit"><%- icon('trash-2') %><%= t('demo.remove') %></button></form><% } %>
+  </div>
+  <ul class="small muted mt4 steps-list">
+    <li><%= t('demo.note_chip') %></li>
+    <li><%= t('demo.note_edit') %></li>
+    <li><%= t('demo.note_safe') %></li>
+  </ul>
+</section>
+
+<section class="card">
+  <h2><%= t('demo.images_title') %></h2>
+  <p class="small muted"><%= t('demo.images_lead') %></p>
+  <% var im = d.images; %>
+  <% if (im) { %><p class="small"><span class="chip <%= im.state === 'done' ? 'ok' : im.state === 'failed' ? 'danger' : 'brand' %>"><%= t('demo.img_state.' + im.state) %></span>
+    <% if (im.state === 'done') { %> <%= t('demo.img_done', { n: im.imported, failed: im.failed }) %><% } %><% if (im.state === 'failed') { %> <%= im.error %><% } %></p><% } %>
+  <div class="cluster">
+    <form method="post" action="/staff/system/demo/images"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="btn" type="submit" <%= im && im.state === 'running' ? 'disabled' : '' %>><%- icon('images') %><%= t('demo.images_btn') %></button></form>
+    <a class="btn ghost" href="/staff/media"><%- icon('image') %><%= t('nav.media') %></a>
+  </div>
+</section>

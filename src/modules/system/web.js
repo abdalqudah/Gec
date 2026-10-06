@@ -9,6 +9,7 @@ const nav = require('../staff/nav');
 const config = require('../../config');
 const updates = require('./updates');
 const github = require('./github');
+const demo = require('./demo');
 
 const provider = () => config.updates.mode;
 const statusOf = async () => {
@@ -18,6 +19,8 @@ const statusOf = async () => {
 };
 
 nav.add('system', { key: 'system_update', href: '/staff/system/update', icon: 'refresh-cw', perms: ['system.update'], badge: async () => { if (provider() === 'github') return github.cachedPending(); if (provider() === 'upload') return 0; const s = updates.status(); return s.connected ? s.pending.length : 0; } });
+
+nav.add('system', { key: 'demo_data', href: '/staff/system/demo', icon: 'database', perms: ['system.update'] });
 
 const router = express.Router();
 
@@ -48,6 +51,22 @@ router.post('/system/update/:action(check|update|rollback)', can('system.update'
     flash(req, 'error', req.t(`sysupdate.err.${e.code}`));
   }
   res.redirect('/staff/system/update');
+}));
+
+// ------------------------------------------------------------------ demo data
+router.get('/system/demo', can('system.update'), ah(async (req, res) => {
+  res.page('pages/staff/system/demo', { layout: 'staff', narrow: true, title: req.t('nav.demo_data'), d: await demo.status() });
+}));
+router.post('/system/demo/:action(load|remove|images)', can('system.update'), ah(async (req, res) => {
+  try {
+    if (req.params.action === 'load') { await demo.load(req.ctx, { images: req.body.images === '1' }); flash(req, 'ok', req.t('demo.loaded')); }
+    if (req.params.action === 'remove') { await demo.remove(req.ctx); flash(req, 'ok', req.t('demo.removed')); }
+    if (req.params.action === 'images') { setImmediate(() => { demo.importImages(req.ctx).catch(() => {}); }); flash(req, 'ok', req.t('demo.images_started')); }
+  } catch (e) {
+    if (e.code !== 'DEMO_BUSY') throw e;
+    flash(req, 'error', req.t('demo.busy'));
+  }
+  res.redirect('/staff/system/demo');
 }));
 
 module.exports = router;

@@ -70,5 +70,53 @@
     "up_step4": "Open this page again: the version and build date above show the new version.",
     "up_open": "Open hPanel",
     "up_safe": "Uploaded documents and images are stored outside the app folder (STORAGE_DIR), so a new upload never deletes them."
+  },
+  "demo": {
+    "lead": "Sample universities, programs, scholarships, website content, leads, students and events to try the platform. Everything is marked “Demo” and can be edited, replaced or deleted.",
+    "loaded_title": "{n} demo records",
+    "empty_title": "No demo data",
+    "on": "Loaded",
+    "off": "Not loaded",
+    "load": "Load demo data",
+    "load_again": "Load missing demo data",
+    "remove": "Remove all demo data",
+    "remove_confirm": "Delete every record marked Demo? Your own records are kept.",
+    "loaded": "Demo data loaded. Photos are being copied into the media library.",
+    "removed": "All demo data removed.",
+    "busy": "Demo data is already being loaded or removed — wait a moment.",
+    "note_chip": "Demo records show a “Demo” chip in lists and forms.",
+    "note_edit": "Edit them like any record (Admissions → Universities / Programs, Website → Pages / Slides …). An edited demo record stays marked Demo until you remove it here.",
+    "note_safe": "Demo staff accounts cannot sign in on a live site; demo leads use reserved example.com addresses that never reach anyone.",
+    "images_title": "Demo photos",
+    "images_lead": "The sample photos are copied from their original addresses into Website → Media library, where you can replace them with your own photos or delete them.",
+    "images_btn": "Copy photos into the library",
+    "images_started": "Copying photos into the media library…",
+    "img_done": "{n} photos copied, {failed} could not be downloaded.",
+    "img_state": {
+      "running": "Copying…",
+      "done": "Done",
+      "failed": "Failed"
+    },
+    "t": {
+      "universities": "Universities",
+      "programs": "Programs",
+      "scholarships": "Scholarships",
+      "destinations": "Destinations",
+      "leads": "Leads",
+      "students": "Students",
+      "applications": "Applications",
+      "tasks": "Tasks",
+      "appointments": "Appointments",
+      "events": "Events",
+      "courses": "Courses",
+      "articles": "Articles",
+      "services": "Services",
+      "faqs": "FAQs",
+      "testimonials": "Testimonials",
+      "pages": "Pages",
+      "hero_slides": "Slides",
+      "invoices": "Invoices",
+      "partners": "Partners"
+    }
   }
 }

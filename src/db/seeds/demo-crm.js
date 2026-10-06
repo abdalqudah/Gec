@@ -1,6 +1,8 @@
 // Demo CRM data for development and training: counsellors, leads in every stage, students, tasks.
 // Every row is flagged is_demo = 1 and shows a "Demo" chip; `npm run seed -- --remove` deletes them all.
+const crypto = require('crypto');
 const knex = require('../knex');
+const config = require('../../config');
 const { hashPassword } = require('../../modules/auth/auth.service');
 const leads = require('../../modules/crm/leads.service');
 const students = require('../../modules/crm/students.service');
@@ -32,7 +34,7 @@ async function run() {
   for (const [name, email, countries] of COUNSELLORS) {
     let u = await knex('users').where({ kind: 'staff', email }).first();
     if (!u) {
-      const [uid] = await knex('users').insert({ kind: 'staff', email, name, password_hash: await hashPassword('Password123'), status: 'active' });
+      const [uid] = await knex('users').insert({ kind: 'staff', email, name, password_hash: await hashPassword(config.isProd ? crypto.randomBytes(24).toString('hex') : 'Password123') /* on a live site demo staff cannot sign in */, status: 'active' });
       await knex('employees').insert({ user_id: uid, role_id: role.id, branch_id: branch.id, job_title: 'Senior Counsellor', is_counsellor: true, auto_assign: true, countries: JSON.stringify(countries), is_demo: true });
       u = { id: uid };
     }
