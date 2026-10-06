@@ -161,7 +161,7 @@ sudo apt update && sudo apt install -y caddy
 ### 3.3 تنزيل المنصة وتشغيلها
 ```bash
 sudo mkdir -p /opt/gec && sudo chown $USER /opt/gec
-git clone <رابط المستودع> /opt/gec && cd /opt/gec/gec
+git clone https://github.com/abdalqudah/gec.git /opt/gec && cd /opt/gec
 cp .env.example .env
 nano .env
 ```
@@ -195,7 +195,7 @@ curl http://127.0.0.1:3000/healthz
 ### 3.5 التحديثات لاحقاً — زر «تحديث النظام»
 ثبّت محدِّث الخادم **مرة واحدة**:
 ```bash
-cd /opt/gec/gec && sudo ./deploy/install-updater.sh
+cd /opt/gec && sudo ./deploy/install-updater.sh
 ```
 بعدها يظهر في لوحة الموظفين **النظام ← تحديث النظام** (لمدير النظام الأعلى فقط): الإصدار الحالي، التحديثات
 المتاحة، وزر **«تحديث النظام الآن»**. عند الضغط: نسخة احتياطية ← تنزيل الإصدار الجديد ← إعادة البناء والتشغيل ←
@@ -206,7 +206,7 @@ cd /opt/gec/gec && sudo ./deploy/install-updater.sh
 
 يدوياً (بدون الزر):
 ```bash
-cd /opt/gec && git pull && cd gec && GIT_COMMIT=$(git rev-parse HEAD) docker compose up -d --build
+cd /opt/gec && git pull && GIT_COMMIT=$(git rev-parse HEAD) docker compose up -d --build
 ```
 
 ---
@@ -355,7 +355,7 @@ cd /opt/gec && git pull && cd gec && GIT_COMMIT=$(git rev-parse HEAD) docker com
    sudo mkdir -p /var/backups/gec && sudo chown $USER /var/backups/gec
    crontab -e
    # أضف السطر:
-   30 2 * * * /opt/gec/gec/deploy/backup.sh >> /var/log/gec-backup.log 2>&1
+   30 2 * * * /opt/gec/deploy/backup.sh >> /var/log/gec-backup.log 2>&1
    ```
 2. انسخ مجلد النسخ إلى مكان خارج الخادم (Backblaze B2 أو S3 أو Google Drive عبر `rclone`) — نسخة على نفس
    الخادم لا تحمي من فقدانه. فعّل أيضاً اللقطات (Snapshots) الأسبوعية من مزود الخادم.
