@@ -36,7 +36,7 @@
     "cta_text": "Call-to-action text",
     "default_text": "Leave empty to use the default text",
     "home_lead": "Edit the main texts of the home page. Services, testimonials and articles appear automatically when published.",
-    "home_hint": "Empty fields fall back to the built-in text in that language.",
+    "home_hint": "Empty fields fall back to the built-in text in that language. The headline and lead are used only while Website → Home slider has no slides; once it has slides, edit the first slide instead.",
     "page_slug_hint": "The page address, e.g. about → /about. Some addresses are reserved by the site.",
     "author_hint": "Used when the author is not a team member.",
     "published_hint": "Publishing date. A future date schedules the article.",

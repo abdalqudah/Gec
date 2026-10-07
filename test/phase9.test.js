@@ -82,7 +82,8 @@ test('staff CMS: create & publish a page, reserved addresses refused, consent ru
   await m.post('/staff/navigation').type('form').send({ _csrf: tok, label_en: 'Bad', href: 'javascript:alert(1)', location: 'header', is_active: '1' });
   assert.equal(await knex('nav_items').where({ label_en: 'Bad' }).first(), undefined, 'unsafe links refused');
   await knex('nav_items').del(); require('../src/modules/cms/nav').clear();
-  // Home page texts
+  // Home page texts (used while the slider has no slides of its own)
+  await knex('hero_slides').del();
   await m.post('/staff/website/home').type('form').send({ _csrf: tok, hero_title_en: 'Plan your studies abroad', hero_title_ar: '' });
   const home = await (await agent()).get('/');
   assert.match(home.text, /Plan your studies abroad/);
