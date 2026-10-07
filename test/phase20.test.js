@@ -51,8 +51,12 @@ test('edit bar: website editors see links to edit this page; visitors and other 
   const page = await m.get(`/universities/${u.slug}?lang=en`);
   assert.match(page.text, /class="edit-bar"/);
   assert.match(page.text, new RegExp(`href="/staff/universities/${u.id}"`));
-  const token = /\/staff\/website\/texts\?page=([A-Za-z0-9_-]+)/.exec(page.text)[1];
-  const texts = await m.get(`/staff/website/texts?page=${token}&lang=en`);
+  const token = /\/staff\/website\/texts\?on=([A-Za-z0-9_-]+)/.exec(page.text)[1];
+  const texts = await m.get(`/staff/website/texts?on=${token}&lang=en`);
+  // The page token never collides with page numbering (a token starting with a digit used to show an empty list).
+  const { rememberKeys } = require('../src/modules/cms/siteedit');
+  const digitToken = rememberKeys(new Set(['unis.title']), '/universities');
+  assert.match((await m.get(`/staff/website/texts?on=${digitToken}&page=1&lang=en`)).text, /name="en:unis\.title"/);
   assert.match(texts.text, /Texts used on/);
   assert.match(texts.text, /name="en:/);
   assert.doesNotMatch((await (await agent()).get(`/universities/${u.slug}`)).text, /edit-bar/);

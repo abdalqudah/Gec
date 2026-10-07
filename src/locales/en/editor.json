@@ -190,6 +190,7 @@
       "common": "Common words",
       "ref": "Degrees, fields, countries",
       "errors": "Error messages"
-    }
+    },
+    "bar_hint": "links to edit this page"
   }
 }

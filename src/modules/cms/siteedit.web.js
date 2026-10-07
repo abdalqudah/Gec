@@ -15,7 +15,7 @@ const PER = 40;
 
 function textRows(req) {
   const ov = i18n.getOverrides();
-  const fromPage = req.query.page ? svc.keysFor(req.query.page) : null;
+  const fromPage = req.query.on ? svc.keysFor(req.query.on) : null; // "on" = the page the editor came from ("page" is the page number)
   const group = svc.TEXT_GROUPS.includes(req.query.group) ? req.query.group : (fromPage || req.query.q || req.query.edited ? null : 'home');
   const q = String(req.query.q || '').trim().toLowerCase().slice(0, 100);
   let keys = fromPage ? fromPage.keys : i18n.keys('en').filter((k) => svc.TEXT_GROUPS.includes(k.split('.')[0]));
