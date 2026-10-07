@@ -60,7 +60,10 @@
       "australia": "Australia",
       "germany": "Germany",
       "ireland": "Ireland"
-    }
+    },
+    "slides_add_defaults": "Add the built-in slides to edit",
+    "slides_defaults_added": "The four built-in slides were added. Open one to change its text, photo or buttons.",
+    "slides_defaults_exist": "The slider already has slides."
   },
   "media": {
     "lead": "Images for the website, uploaded once and used anywhere. Every image is checked by content and served from this site.",

@@ -65,6 +65,7 @@ async function run() {
     await knex('testimonials').insert(gec.testimonialsData.map((q, i) => ({ name_en: q.nameEn, name_ar: q.nameAr, quote_en: q.quoteEn, quote_ar: q.quoteAr, country_en: q.countryEn, country_ar: q.countryAr, university_en: q.universityEn, university_ar: q.universityAr, program_en: q.programEn, program_ar: q.programAr, year: Number(q.year) || null, destination: q.destination || null, position: i + 1, consent_on_file: false, is_published: false, is_demo: true })));
     out.testimonials = gec.testimonialsData.length;
   }
+  out.slides = await require('../../modules/cms/default-slides').insert({ demo: true }); // eslint-disable-line global-require
   for (const p of PAGES) {
     if (await knex('pages').where({ slug: p.slug }).first()) continue; // eslint-disable-line no-await-in-loop, no-continue
     await knex('pages').insert({ ...p, ...(p.slug === 'about' ? { blocks: JSON.stringify(ABOUT_BLOCKS) } : {}), is_published: true, is_demo: true }); // eslint-disable-line no-await-in-loop
@@ -74,7 +75,7 @@ async function run() {
 }
 
 async function remove() {
-  for (const t of ['services', 'articles', 'faqs', 'testimonials', 'pages']) await knex(t).where({ is_demo: true }).del(); // eslint-disable-line no-await-in-loop
+  for (const t of ['services', 'articles', 'faqs', 'testimonials', 'pages', 'hero_slides']) await knex(t).where({ is_demo: true }).del(); // eslint-disable-line no-await-in-loop
 }
 
 module.exports = { run, remove };

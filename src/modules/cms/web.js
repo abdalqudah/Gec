@@ -91,6 +91,12 @@ router.post('/media/:id/delete', can('cms.manage'), ah(async (req, res) => {
   res.redirect('/staff/media');
 }));
 
+router.post('/slides/defaults', can('cms.manage'), ah(async (req, res) => {
+  const n = await require('./default-slides').insert(); // eslint-disable-line global-require
+  if (n) await require('../../core/audit').record(req.ctx, 'slides.defaults_added', { entityType: 'hero_slide', newValues: { count: n } }); // eslint-disable-line global-require
+  flash(req, 'ok', req.t(n ? 'cms.slides_defaults_added' : 'cms.slides_defaults_exist'));
+  res.redirect('/staff/slides');
+}));
 router.use('/slides', admin.slides.router);
 router.use('/', require('./builder.web')); // before the pages resource: /pages/:id/builder
 router.use('/pages', admin.pages.router);

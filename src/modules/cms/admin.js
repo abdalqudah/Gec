@@ -80,7 +80,8 @@ const COVERS = ['hero', 'campus', 'scholarship', 'uk', 'usa', 'canada', 'austral
 const linkOk = (v) => !v || /^(\/(?!\/)|https?:\/\/)/.test(v);
 const slides = resource({
   key: 'slides', table: 'hero_slides', entity: 'hero_slide', nameField: 'title_en', perms, defaults: { cover: 'hero', is_active: true, position: 0 },
-  list: { search: ['title_en', 'title_ar'], defaultSort: ['position', 'asc'], columns: [{ key: 'title', label: 'common.name', render: (r, req) => L(req, r, 'title') }, { key: 'position', label: 'resources.fields.position' }, { key: 'is_active', label: 'common.status', type: 'bool' }] },
+  list: { search: ['title_en', 'title_ar'], defaultSort: ['position', 'asc'], columns: [{ key: 'title', label: 'common.name', render: (r, req) => L(req, r, 'title') }, { key: 'position', label: 'resources.fields.position' }, { key: 'is_active', label: 'common.status', type: 'bool' }],
+    forms: [{ action: '/staff/slides/defaults', icon: 'images', label: 'cms.slides_add_defaults', when: (total) => !total }] },
   sections: [
     { key: 'basics', fields: [{ name: 'eyebrow', type: 'text', bilingual: true, max: 120 }, { name: 'title', type: 'text', bilingual: true, required: true, max: 190 }, { name: 'text', type: 'textarea', bilingual: true, rows: 2, max: 400 }] },
     { key: 'image', fields: [{ name: 'image', type: 'image', hint: 'cms.slide_image_hint' }, { name: 'cover', type: 'select', required: true, options: COVERS, optionLabel: 'cms.cover' }] },

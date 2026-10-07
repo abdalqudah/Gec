@@ -4,7 +4,7 @@
     <nav class="breadcrumbs" aria-label="<%= t('common.breadcrumbs') %>"><a href="/programs"><%= t('finder.title') %></a><%- icon('chevron-right') %><a href="/universities/<%= p.university_slug %>"><%= L(p, 'university') %></a><%- icon('chevron-right') %><span><%= name %></span></nav>
     <div class="spread" style="align-items:flex-start">
       <div class="row top grow" style="min-width:0">
-        <span class="pcard-logo" style="width:56px;height:56px"><% if (p.logo) { %><img src="<%= p.logo %>" alt="" width="56" height="56"><% } else { %><%= L(p, 'university').charAt(0) %><% } %></span>
+        <span class="pcard-logo" style="width:56px;height:56px;<%= cover(p.logo, '/art/crest/' + p.university_slug + '.svg') %>" aria-hidden="true"></span>
         <div style="min-width:0">
           <h1 style="margin:0"><%= name %> <% if (p.is_demo) { %><span class="chip demo" title="<%= t('common.demo_hint') %>"><%= t('common.demo') %></span><% } %></h1>
           <p class="muted mb0"><a href="/universities/<%= p.university_slug %>"><%= L(p, 'university') %></a> · <%- flagImg(p.country_code) %> <%= L(p, 'city') %>, <a href="/study/<%= p.destination_slug %>"><%= L(p, 'destination') %></a></p>

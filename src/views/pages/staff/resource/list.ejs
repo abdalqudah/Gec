@@ -3,6 +3,7 @@
   <div class="cluster">
     <% if (canImport) { %><button class="btn" type="button" data-dialog-open="import-dialog"><%- icon('upload') %><%= t('common.import') %></button><% } %>
     <% if (def.csv) { %><a class="btn ghost" href="<%= base %>/export.csv<%= qs({ page: null }) %>"><%- icon('download') %><%= t('common.export') %></a><% } %>
+    <% if (canManage && def.list.forms) { def.list.forms.forEach(function (f) { if (f.when && !f.when(meta.total)) return; %><form method="post" action="<%= f.action %>"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="btn" type="submit"><%- icon(f.icon) %><%= t(f.label) %></button></form><% }) } %>
     <% if (canManage) { %><a class="btn primary" href="<%= base %>/new"><%- icon('plus') %><%= t('resources.' + def.key + '.new') %></a><% } %>
   </div>
 </div>
