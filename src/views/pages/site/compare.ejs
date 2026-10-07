@@ -15,7 +15,7 @@
       <% } %>
     </div>
     <% if (!programs.length) { %>
-      <div class="card"><%- include('../../partials/empty', { title: t('compare.empty'), text: t('compare.empty_text'), href: '/programs', cta: t('shortlist.find_programs'), ctaIcon: 'search', emptyIcon: 'scale' }) %></div>
+      <div class="card"><%- include('../../partials/empty', { title: t('compare.empty'), text: t('compare.empty_text'), href: '/programs', cta: t('shortlist.find_programs'), ctaIcon: 'search', emptyIcon: 'git-compare-arrows' }) %></div>
     <% } else { %>
     <div class="table-wrap"><table class="table compare-table">
       <thead><tr><th scope="col"><span class="sr-only"><%= t('compare.criterion') %></span></th><% programs.forEach(function (p) { %><th scope="col"><a href="/programs/<%= p.slug %>" style="font-size:.98rem;color:var(--text)"><%= L(p, 'name') %></a><div class="small subtle" style="font-weight:500"><%= L(p, 'university') %></div>

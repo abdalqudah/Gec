@@ -15,16 +15,18 @@
       .then(function (r) { return r.json().then(function (j) { if (!r.ok || j.ok === false) throw new Error((j.error && j.error.message) || 'Error'); return j; }); })
       .then(function (j) {
         btn.setAttribute('aria-pressed', String(j.on));
-        var label = btn.getAttribute(j.on ? 'data-label-on' : 'data-label-off');
-        btn.setAttribute('aria-label', label); btn.title = label;
-        if (kind === 'shortlist') btn.innerHTML = GEC.icon(j.on ? 'bookmark-check' : 'bookmark');
+        btn.title = btn.getAttribute(j.on ? 'data-label-on' : 'data-label-off');
+        var short = btn.querySelector('[data-short]');
+        if (short) short.textContent = btn.getAttribute(j.on ? 'data-short-on' : 'data-short-off');
+        var svg = btn.querySelector('svg');
+        if (svg) svg.outerHTML = GEC.icon(kind === 'compare' ? (j.on ? 'check' : 'git-compare-arrows') : (j.on ? 'heart-filled' : 'heart'));
         var bar = doc.querySelector('[data-compare-bar]');
         if (kind === 'compare' && bar) {
           var n = (j.ids || []).length;
           bar.hidden = n === 0;
           var c = bar.querySelector('[data-compare-count]'); if (c) c.textContent = String(n);
         }
-        GEC.toast(label === btn.getAttribute('data-label-on') ? (doc.body.getAttribute('data-locale') === 'ar' ? 'تم' : 'Done') : (doc.body.getAttribute('data-locale') === 'ar' ? 'تمت الإزالة' : 'Removed'));
+        GEC.toast(btn.getAttribute(j.on ? 'data-toast-on' : 'data-toast-off') || btn.title);
       })
       .catch(function (err) { GEC.toast(err.message, 'error'); });
   });

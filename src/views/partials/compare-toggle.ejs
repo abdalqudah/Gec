@@ -1,5 +1,5 @@
 <% var on = state && state.comparing && state.comparing.indexOf(id) >= 0; %>
 <form method="post" action="/compare/toggle" class="inline-toggle" data-toggle-form="compare">
   <input type="hidden" name="_csrf" value="<%= csrfToken %>"><input type="hidden" name="id" value="<%= id %>">
-  <button type="submit" class="icon-toggle" aria-pressed="<%= on ? 'true' : 'false' %>" aria-label="<%= on ? t('compare.remove') : t('compare.add') %>" title="<%= on ? t('compare.remove') : t('compare.add') %>" data-label-on="<%= t('compare.remove') %>" data-label-off="<%= t('compare.add') %>"><%- icon('scale') %></button>
+  <button type="submit" class="pill-toggle" aria-pressed="<%= on ? 'true' : 'false' %>" title="<%= on ? t('compare.remove') : t('compare.add') %>" data-label-on="<%= t('compare.remove') %>" data-label-off="<%= t('compare.add') %>" data-toast-on="<%= t('compare.added') %>" data-toast-off="<%= t('compare.removed') %>" data-short-on="<%= t('compare.short_on') %>" data-short-off="<%= t('compare.short_off') %>"><%- icon(on ? 'check' : 'git-compare-arrows') %><span data-short><%= on ? t('compare.short_on') : t('compare.short_off') %></span></button>
 </form>

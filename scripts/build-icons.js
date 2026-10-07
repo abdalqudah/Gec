@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ICONS = [
-  'arrow-up', 'type', 'panel-top', 'columns-2', 'layout-grid', 'check-check', 'images', 'pause', 'play', 'route', 'circle-check', 'arrow-down', 'quote', 'plane', 'wallet', 'stamp', 'house-plus', 'file', 'house', 'link-2-off', 'party-popper', 'circle-dashed', 'mail-check',
+  'arrow-up', 'git-compare-arrows', 'type', 'panel-top', 'columns-2', 'layout-grid', 'check-check', 'images', 'pause', 'play', 'route', 'circle-check', 'arrow-down', 'quote', 'plane', 'wallet', 'stamp', 'house-plus', 'file', 'house', 'link-2-off', 'party-popper', 'circle-dashed', 'mail-check',
   'chart-line', 'trophy', 'megaphone', 'workflow', 'flame', 'mouse-pointer-click', 'eye', 'zap', 'power', 'mail-x',
   'plug-zap', 'handshake', 'arrow-down-left', 'calendar-plus', 'calendar-x', 'shield-x',
   'search', 'x', 'menu', 'chevron-down', 'chevron-up', 'chevron-left', 'chevron-right', 'arrow-left', 'arrow-right', 'arrow-up-right',
@@ -34,6 +34,9 @@ for (const name of ICONS) {
   const inner = svg.replace(/<!--[\s\S]*?-->/g, '').replace(/^[\s\S]*?<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '').replace(/\s+/g, ' ').trim();
   out.push(`<symbol id="i-${name}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${inner}</symbol>`);
 }
+// A solid heart for "saved" (same outline, filled).
+const heart = out.find((l) => l.startsWith('<symbol id="i-heart"'));
+if (heart) out.push(heart.replace('id="i-heart"', 'id="i-heart-filled"').replace('fill="none"', 'fill="currentColor"'));
 out.push('</svg>');
 fs.writeFileSync(path.join(__dirname, '..', 'public', 'icons.svg'), out.join('\n'));
 console.log(`icons.svg: ${ICONS.length - missing.length} icons${missing.length ? `; missing: ${missing.join(', ')}` : ''}`); // eslint-disable-line no-console

@@ -32,7 +32,7 @@ const JOURNEY = ['profile', 'counselling', 'program_selection', 'documents', 'ap
 const NAV = [
   { key: 'home', href: '/portal', icon: 'house', exact: true, bottom: true },
   { key: 'programs', href: '/portal/programs', icon: 'search', bottom: true },
-  { key: 'shortlist', href: '/portal/shortlist', icon: 'bookmark' },
+  { key: 'shortlist', href: '/portal/shortlist', icon: 'heart' },
   { key: 'applications', href: '/portal/applications', icon: 'kanban', bottom: true },
   { key: 'documents', href: '/portal/documents', icon: 'files', bottom: true },
   { key: 'appointments', href: '/portal/appointments', icon: 'calendar-check' },

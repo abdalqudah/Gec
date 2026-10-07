@@ -3,7 +3,7 @@
     <section class="card">
       <div class="card-head"><h2><%= t('shortlist.title') %> <span class="count"><%= items.count || 0 %></span></h2><a class="btn sm ghost" href="?tab=matches"><%- icon('target') %><%= t('students.tab_matches') %></a></div>
       <% if (!items.count) { %>
-        <%- include('../../../partials/empty', { title: t('shortlist.empty_staff'), text: t('shortlist.empty_staff_text'), emptyIcon: 'bookmark', compact: true }) %>
+        <%- include('../../../partials/empty', { title: t('shortlist.empty_staff'), text: t('shortlist.empty_staff_text'), emptyIcon: 'heart', compact: true }) %>
       <% } else { %>
       <div class="divider-list">
         <% items.programs.forEach(function (p) { %>

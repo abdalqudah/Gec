@@ -7,7 +7,7 @@ const ICONS = {
   note: ['sticky-note', ''], stage: ['git-merge', 'brand'], assigned: ['user-check', 'info'], task: ['list-checks', ''], document: ['file-text', 'warn'],
   application: ['graduation-cap', 'brand'], payment: ['receipt', 'ok'], appointment: ['calendar-check', 'brand'], web: ['mouse-pointer-click', ''],
   form: ['file-check', 'ok'], created: ['user-plus', 'ok'], converted: ['badge-check', 'ok'], lost: ['circle-x', 'bad'], merged: ['merge', 'info'],
-  visa: ['plane', 'brand'], course: ['book-open', 'brand'], event: ['ticket', 'brand'], system: ['zap', ''], shortlist: ['bookmark', ''],
+  visa: ['plane', 'brand'], course: ['book-open', 'brand'], event: ['ticket', 'brand'], system: ['zap', ''], shortlist: ['heart', ''],
 };
 
 /**

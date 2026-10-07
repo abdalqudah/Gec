@@ -500,3 +500,16 @@ body.site:not(.has-hero) main > section:first-child .section-head h1 { font-size
 .page-banner .band-shade { z-index: -1; background: linear-gradient(0deg, rgb(10 18 14 / .82), rgb(10 18 14 / .35)); }
 .page-banner h1 { color: #fff; margin: 0 0 8px; font-size: clamp(1.9rem, 1.4rem + 2vw, 2.8rem); }
 .page-banner p { color: rgb(255 255 255 / .88); margin: 0; max-width: 65ch; font-size: 1.05rem; }
+
+/* Compare / favourite buttons: icon + a short word, so nobody has to guess what a symbol means. */
+.pill-toggle { display: inline-flex; align-items: center; gap: 6px; min-height: 38px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--text-2); font: inherit; font-size: .875rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background .15s, color .15s, border-color .15s; }
+.pill-toggle:hover { background: var(--surface-2); color: var(--text); }
+.pill-toggle[aria-pressed="true"] { background: var(--brand-soft); border-color: var(--brand-line); color: var(--brand-strong); }
+.pill-toggle.heart[aria-pressed="true"] { background: #fdecef; border-color: #f4b6c2; color: #b4234a; }
+.pill-toggle.heart:active svg { transform: scale(1.2); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pill-toggle.heart[aria-pressed="true"] { background: #3a1621; border-color: #7a2c41; color: #ff9db4; } }
+[data-theme="dark"] .pill-toggle.heart[aria-pressed="true"] { background: #3a1621; border-color: #7a2c41; color: #ff9db4; }
+.pill-toggle.compact { width: 40px; height: 40px; padding: 0; justify-content: center; box-shadow: var(--shadow-1); }
+.pcard { position: relative; }
+.pcard-fav { position: absolute; top: 10px; inset-inline-end: 10px; z-index: 2; }
+.pcard-fav .pill-toggle:not([aria-pressed="true"]) { background: rgb(255 255 255 / .92); color: #3c4043; border-color: transparent; }

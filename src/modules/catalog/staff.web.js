@@ -18,7 +18,7 @@ const { translator } = require('../../core/i18n');
 
 tabs.add({ key: 'matches', icon: 'target', perms: ['students.view'], order: 20, view: 'pages/staff/catalog/tab-matches',
   load: async (req, s) => ({ matches: await matching.forStudent(s.id, { limit: 25 }), saved: await shortlist.ids({ studentId: s.id }), s }) });
-tabs.add({ key: 'shortlist', icon: 'bookmark', perms: ['students.view'], order: 21, view: 'pages/staff/catalog/tab-shortlist',
+tabs.add({ key: 'shortlist', icon: 'heart', perms: ['students.view'], order: 21, view: 'pages/staff/catalog/tab-shortlist',
   load: async (req, s) => ({ items: await shortlist.items({ studentId: s.id }), s,
     estimates: await knex('cost_estimates').where({ student_id: s.id }).orderBy('created_at', 'desc').limit(10),
     dests: await knex('destinations').where({ is_active: true }).orderBy('position'), currencies: await money.codes() }) });
