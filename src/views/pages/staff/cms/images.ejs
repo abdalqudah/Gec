@@ -1,0 +1,22 @@
+<div class="page-head"><div><h1><%= title %></h1><p class="lead"><%= t('siteedit.images_lead') %></p></div><a class="btn ghost" href="/staff/media"><%- icon('image') %><%= t('nav.media') %></a></div>
+<form method="post" class="stack" novalidate>
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+  <% ['home', 'banners', 'defaults', 'other'].forEach(function (g) { %>
+  <fieldset class="card"><legend><%= t('siteedit.ig.' + g) %></legend>
+    <p class="small muted"><%= t('siteedit.ig_hint.' + g) %></p>
+    <div class="img-slots">
+    <% Object.keys(slots).filter(function (k) { return slots[k].group === g; }).forEach(function (k) { var fid = 'img_' + k; %>
+      <div class="img-slot <%= errors[k] ? 'has-error' : '' %>">
+        <div class="img-preview" style="<%= cover(current[k] || null, slots[k].fallback) %>" data-media-preview-bg="#<%= fid %>" role="img" aria-label="<%= t('siteedit.slot.' + k) %>"></div>
+        <label for="<%= fid %>"><%= t('siteedit.slot.' + k) %></label>
+        <input id="<%= fid %>" name="<%= k %>" value="<%= current[k] %>" dir="ltr" placeholder="<%= t('siteedit.uses_illustration') %>" <%= errors[k] ? 'aria-invalid=true' : '' %>>
+        <% if (errors[k]) { %><span class="error-text"><%= errors[k] %></span><% } %>
+        <button type="button" class="btn sm ghost" data-media-pick="#<%= fid %>"><%- icon('image') %><%= t('media.choose') %></button>
+      </div>
+    <% }) %>
+    </div>
+  </fieldset>
+  <% }) %>
+  <p class="small muted"><%= t('siteedit.images_note') %></p>
+  <div class="form-actions sticky"><button class="btn primary" type="submit"><%= t('common.save') %></button></div>
+</form>

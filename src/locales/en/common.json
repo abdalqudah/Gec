@@ -155,7 +155,9 @@
     "subscribers": "Newsletter subscribers",
     "utm": "Link builder (UTM)",
     "system_update": "System update",
-    "demo_data": "Demo data"
+    "demo_data": "Demo data",
+    "site_texts": "Website texts",
+    "site_images": "Website images"
   },
   "quick": {},
   "palette": {

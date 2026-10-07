@@ -1,0 +1,31 @@
+<div class="page-head"><div><h1><%= title %></h1><p class="lead"><%= t('siteedit.texts_lead') %></p></div>
+  <% if (edited) { %><a class="btn ghost" href="?edited=1"><%- icon('pencil') %><%= t('siteedit.only_edited', { n: edited }) %></a><% } %></div>
+<% if (fromPage) { %><div class="alert info mb4" role="status"><%- icon('info') %><p class="mb0"><%= t('siteedit.from_page', { path: fromPage.path }) %> · <a href="/staff/website/texts"><%= t('siteedit.all_texts') %></a></p></div><% } %>
+<form method="get" class="cluster mb4" role="search">
+  <label class="sr-only" for="tq"><%= t('common.search') %></label><input id="tq" type="search" name="q" value="<%= q %>" placeholder="<%= t('siteedit.search_ph') %>">
+  <label class="sr-only" for="tg"><%= t('siteedit.group') %></label>
+  <select id="tg" name="group"><option value=""><%= t('siteedit.all_groups') %></option><% groups.forEach(function (g) { %><option value="<%= g %>" <%= group === g ? 'selected' : '' %>><%= t('siteedit.g.' + g) %></option><% }) %></select>
+  <button class="btn" type="submit"><%= t('common.filter') %></button>
+</form>
+<% if (!rows.length) { %><div class="card"><%- include('../../../partials/empty', { title: t('siteedit.no_texts'), emptyIcon: 'type', compact: true }) %></div>
+<% } else { %>
+<form method="post" class="stack" novalidate>
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>"><input type="hidden" name="back" value="<%= fullPath.replace(/^[^?]*/, '') %>">
+  <p class="small muted mb0"><%= t('siteedit.texts_hint') %></p>
+  <% rows.forEach(function (r, i) { var long = (r.en || '').length > 70 || (r.ar || '').length > 70; %>
+  <div class="card text-row <%= r.oen || r.oar ? 'is-edited' : '' %>">
+    <div class="spread"><code class="small muted" dir="ltr"><%= r.key %></code><% if (r.oen || r.oar) { %><span class="chip brand"><%= t('siteedit.edited') %></span><% } %></div>
+    <div class="form-grid two mt2">
+      <% [['en', 'English', 'ltr'], ['ar', 'العربية', 'rtl']].forEach(function (l) { var fid = 't' + i + l[0]; var cur = r['o' + l[0]] || r[l[0]]; %>
+      <div class="field"><label for="<%= fid %>"><%= l[1] %></label>
+        <% if (long) { %><textarea id="<%= fid %>" name="<%= l[0] %>:<%= r.key %>" rows="3" dir="<%= l[2] %>"><%= cur %></textarea><% } else { %><input id="<%= fid %>" name="<%= l[0] %>:<%= r.key %>" value="<%= cur %>" dir="<%= l[2] %>"><% } %>
+        <% if (r['o' + l[0]]) { %><span class="hint"><%= t('siteedit.default_was') %> <%= r[l[0]] %></span><% } %>
+      </div>
+      <% }) %>
+    </div>
+  </div>
+  <% }) %>
+  <div class="form-actions sticky"><button class="btn primary" type="submit"><%= t('common.save') %></button></div>
+</form>
+<%- include('../../../partials/pager', { meta: meta }) %>
+<% } %>

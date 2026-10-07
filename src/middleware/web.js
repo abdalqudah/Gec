@@ -42,6 +42,9 @@ async function locals(req, res, next) {
     }
     const t = translator(locale);
     req.t = t;
+    // Staff who edit the website get an "edit this page" bar on public pages: remember which texts the page used.
+    const editing = req.method === 'GET' && req.can && req.can('cms.manage') && !/^\/(staff|portal|partner|api)\b/.test(req.path);
+    if (editing) t.record = new Set();
     req.locale = locale;
     if (req.session && !req.session.csrf) req.session.csrf = randomToken(24);
     const [branding, company] = await Promise.all([settings.get('branding'), settings.get('company')]);
@@ -60,6 +63,8 @@ async function locals(req, res, next) {
       currentUser: req.user || null,
       staff: req.staff || null,
       can: req.can || (() => false),
+      siteImage: (key) => require('../modules/cms/siteedit').imageOf(key), // eslint-disable-line global-require
+      editBar: editing ? () => ({ textsToken: require('../modules/cms/siteedit').rememberKeys(t.record, req.path) }) : null, // eslint-disable-line global-require
       path: req.path,
       fullPath: req.originalUrl,
       query: req.query,

@@ -69,7 +69,7 @@ router.get('/resources/:slug', ah(async (req, res) => {
   const related = await published(knex('articles')).where({ category: a.category }).whereNot({ id: a.id }).where('published_at', '<=', new Date()).orderBy('published_at', 'desc').limit(3);
   const tags = Array.isArray(a.tags) ? a.tags : (() => { try { return JSON.parse(a.tags || '[]'); } catch { return []; } })();
   const branding = res.locals.branding;
-  res.page('pages/site/article', { layout: 'public', title: L(req, a, 'title'), a, author, related, tags, md: markdown,
+  res.page('pages/site/article', { editHref: `/staff/articles/${a.id}`, layout: 'public', title: L(req, a, 'title'), a, author, related, tags, md: markdown,
     seo: seoFor(req, a, `/resources/${a.slug}`, { ogType: 'article', jsonld: { '@context': 'https://schema.org', '@type': 'Article', headline: L(req, a, 'title'), description: L(req, a, 'excerpt') || undefined, image: a.image || undefined, datePublished: a.published_at ? new Date(a.published_at).toISOString() : undefined, dateModified: new Date(a.updated_at).toISOString(), author: { '@type': author ? 'Person' : 'Organization', name: (author && author.name) || a.author_name || branding.legal_name }, publisher: { '@type': 'Organization', name: branding.legal_name, logo: { '@type': 'ImageObject', url: abs('/brand/logo-horizontal.png') } }, mainEntityOfPage: abs(`/resources/${a.slug}`), inLanguage: req.locale } }) });
 }));
 
@@ -83,7 +83,7 @@ router.get('/services/:slug', ah(async (req, res) => {
   if (!s) throw E.notFound('Service');
   const list = (v) => (Array.isArray(v) ? v : (() => { try { return JSON.parse(v || '[]'); } catch { return []; } })());
   const others = await published(knex('services')).whereNot({ id: s.id }).orderBy('position').limit(6);
-  res.page('pages/site/service', { layout: 'public', title: L(req, s, 'title'), s: { ...s, deliverables_en: list(s.deliverables_en), deliverables_ar: list(s.deliverables_ar) }, others, md: markdown,
+  res.page('pages/site/service', { editHref: `/staff/services/${s.id}`, layout: 'public', title: L(req, s, 'title'), s: { ...s, deliverables_en: list(s.deliverables_en), deliverables_ar: list(s.deliverables_ar) }, others, md: markdown,
     seo: seoFor(req, s, `/services/${s.slug}`, { jsonld: { '@context': 'https://schema.org', '@type': 'Service', name: L(req, s, 'title'), description: excerpt(L(req, s, 'description')), provider: { '@type': 'EducationalOrganization', name: res.locals.branding.legal_name, url: config.appUrl }, areaServed: 'Worldwide' } }) });
 }));
 
@@ -130,7 +130,7 @@ router.get('/:slug', ah(async (req, res, next) => {
   const seo = seoFor(req, p, `/${p.slug}`);
   if (qa.length) seo.jsonld = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: qa.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) };
   if (!seo.image) { const h = pageBlocks.find((b) => b.type === 'hero' && b.image); if (h) seo.image = h.image; }
-  return res.page('pages/site/page', { layout: 'public', title: L(req, p, 'title'), p, faqs, md: markdown, pageBlocks, heroPage: Boolean(pageBlocks[0] && pageBlocks[0].type === 'hero'), seo });
+  return res.page('pages/site/page', { editHref: `/staff/pages/${p.id}/builder`, layout: 'public', title: L(req, p, 'title'), p, faqs, md: markdown, pageBlocks, heroPage: Boolean(pageBlocks[0] && pageBlocks[0].type === 'hero'), seo });
 }));
 
 module.exports = { router, homeLocals };

@@ -166,7 +166,7 @@ router.get('/courses/:slug', ah(async (req, res) => {
   if (!c) throw E.notFound('Course');
   const seats = await courses.seatsTaken(c.id);
   const sessions = await knex('course_sessions').where({ course_id: c.id }).orderBy('starts_at');
-  res.page('pages/site/course', { layout: 'public', title: L(req, c, 'name'), c, seats, sessions, md: markdown, old: {}, errors: {}, seo: { title: L(req, c, 'seo_title') || L(req, c, 'name'), description: L(req, c, 'seo_description') || require('../../core/markdown').excerpt(L(req, c, 'description')), canonical: `${config.appUrl}/courses/${c.slug}`, image: c.image } }); // eslint-disable-line global-require
+  res.page('pages/site/course', { editHref: `/staff/courses/${c.id}`, layout: 'public', title: L(req, c, 'name'), c, seats, sessions, md: markdown, old: {}, errors: {}, seo: { title: L(req, c, 'seo_title') || L(req, c, 'name'), description: L(req, c, 'seo_description') || require('../../core/markdown').excerpt(L(req, c, 'description')), canonical: `${config.appUrl}/courses/${c.slug}`, image: c.image } }); // eslint-disable-line global-require
 }));
 
 const regSchema = z.object({ name: reqStr(160), email: optEmail(), phone: phone(), consent_contact: z.literal('1', { errorMap: () => ({ message: 'Required.' }) }) }).refine((d) => d.email || d.phone, { message: 'Enter an email or a phone number.', path: ['email'] });
@@ -185,7 +185,7 @@ router.post('/courses/:slug', limits.publicForm, ah(async (req, res) => {
     if (e.code === 'REGISTRATION_CLOSED') { req.session.flash = [{ type: 'error', message: req.t('errors.REGISTRATION_CLOSED') }]; return res.redirect(`/courses/${c.slug}`); }
     if (e.code !== 'VALIDATION_FAILED') throw e;
     res.status(422);
-    return res.page('pages/site/course', { layout: 'public', title: L(req, c, 'name'), c, seats: await courses.seatsTaken(c.id), sessions: [], md: markdown, old: req.body, errors: e.details, seo: { noindex: true } });
+    return res.page('pages/site/course', { editHref: `/staff/courses/${c.id}`, layout: 'public', title: L(req, c, 'name'), c, seats: await courses.seatsTaken(c.id), sessions: [], md: markdown, old: req.body, errors: e.details, seo: { noindex: true } });
   }
 }));
 
@@ -204,7 +204,7 @@ router.get('/events/:slug', ah(async (req, res) => {
   const parse = (v) => (Array.isArray(v) ? v : (() => { try { return JSON.parse(v || '[]'); } catch { return []; } })());
   ev.speakers_en = parse(ev.speakers_en); ev.speakers_ar = parse(ev.speakers_ar);
   delete ev.meeting_url; // only on tickets
-  res.page('pages/site/event', { layout: 'public', title: L(req, ev, 'title'), ev, seats, md: markdown, old: {}, errors: {}, seo: {
+  res.page('pages/site/event', { editHref: `/staff/events/${ev.id}`, layout: 'public', title: L(req, ev, 'title'), ev, seats, md: markdown, old: {}, errors: {}, seo: {
     title: L(req, ev, 'seo_title') || L(req, ev, 'title'), description: L(req, ev, 'seo_description') || require('../../core/markdown').excerpt(L(req, ev, 'description')), canonical: `${config.appUrl}/events/${ev.slug}`, image: ev.image, // eslint-disable-line global-require
     jsonld: { '@context': 'https://schema.org', '@type': 'Event', name: L(req, ev, 'title'), startDate: new Date(ev.starts_at).toISOString(), endDate: ev.ends_at ? new Date(ev.ends_at).toISOString() : undefined,
       eventAttendanceMode: ev.is_virtual ? 'https://schema.org/OnlineEventAttendanceMode' : 'https://schema.org/OfflineEventAttendanceMode', location: ev.is_virtual ? { '@type': 'VirtualLocation', url: `${config.appUrl}/events/${ev.slug}` } : { '@type': 'Place', name: L(req, ev, 'location') || 'GEC' },
@@ -226,7 +226,7 @@ router.post('/events/:slug', limits.publicForm, ah(async (req, res) => {
     if (e.code === 'REGISTRATION_CLOSED') { req.session.flash = [{ type: 'error', message: req.t('errors.REGISTRATION_CLOSED') }]; return res.redirect(`/events/${ev.slug}`); }
     if (e.code !== 'VALIDATION_FAILED') throw e;
     res.status(422);
-    return res.page('pages/site/event', { layout: 'public', title: L(req, ev, 'title'), ev: { ...ev, speakers_en: [], speakers_ar: [] }, seats: await eventsSvc.seatsTaken(ev.id), md: markdown, old: req.body, errors: e.details, seo: { noindex: true } });
+    return res.page('pages/site/event', { editHref: `/staff/events/${ev.id}`, layout: 'public', title: L(req, ev, 'title'), ev: { ...ev, speakers_en: [], speakers_ar: [] }, seats: await eventsSvc.seatsTaken(ev.id), md: markdown, old: req.body, errors: e.details, seo: { noindex: true } });
   }
 }));
 

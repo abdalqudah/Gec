@@ -7,7 +7,7 @@
     </div>
     <div class="grid-3"><% hc.events.forEach(function (ev) { var d = new Date(ev.starts_at); %>
       <a class="event-tile" href="/events/<%= ev.slug %>">
-        <span class="et-cover" style="<%= cover(ev.image, 'campus') %>"><span class="et-date"><b><%= fmt.date(d, { day: 'numeric' }) %></b><small><%= fmt.date(d, { month: 'short' }) %></small></span></span>
+        <span class="et-cover" style="<%= cover(ev.image || siteImage('default_event'), 'campus') %>"><span class="et-date"><b><%= fmt.date(d, { day: 'numeric' }) %></b><small><%= fmt.date(d, { month: 'short' }) %></small></span></span>
         <span class="et-body"><span class="chip brand"><%= t('booking.event_type.' + ev.type) %></span><strong><%= L(ev, 'title') %></strong><span class="small muted"><%- icon(ev.is_virtual ? 'monitor' : 'map-pin', 'sm') %> <%= ev.is_virtual ? t('home.online') : (L(ev, 'location') || '') %></span></span>
       </a><% }) %></div>
   </div>

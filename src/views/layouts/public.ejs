@@ -34,6 +34,7 @@
 </main>
 <%- include('../partials/site-footer') %>
 <%- include('../partials/flash') %>
+<% if (typeof editBar === 'function' && editBar) { %><%- include('../partials/edit-bar') %><% } %>
 <script src="/js/app.js?v=<%= assetV %>" defer></script>
 <script src="/js/site.js?v=<%= assetV %>" defer></script>
 <% (typeof pageScripts !== 'undefined' ? pageScripts : []).forEach(function (sc) { %><script src="<%= sc %>?v=<%= assetV %>" defer></script><% }) %>

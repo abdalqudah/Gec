@@ -39,7 +39,7 @@
 </div></section>
 <% } else if (b.type === 'cta') { %>
 <section class="section tight"><div class="container"><div class="cta-hero">
-  <span class="band-bg" style="<%= cover(null, 'campus') %>"></span><span class="band-shade"></span>
+  <span class="band-bg" style="<%= cover(siteImage('cta_block'), 'campus') %>"></span><span class="band-shade"></span>
   <div class="cta-copy"><h2><%= title || t('home.cta_title') %></h2><% if (B(b, 'text')) { %><p><%= B(b, 'text') %></p><% } %></div>
   <a class="btn gold lg" href="<%= b.cta_href || '/book' %>"><%= B(b, 'cta_label') || t('site.book_consultation') %></a>
 </div></div></section>

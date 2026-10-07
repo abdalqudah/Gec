@@ -2,6 +2,7 @@
 <section class="section tight">
   <div class="container detail-grid">
     <div class="stack" style="--gap:22px;min-width:0">
+      <% var simg = s.image || siteImage('default_scholarship'); if (simg) { %><div class="article-hero" style="<%= cover(simg, 'scholarship') %>" role="img" aria-label="<%= L(s, 'name') %>"></div><% } %>
       <nav class="breadcrumbs"><a href="/scholarships"><%= t('schol.title') %></a><%- icon('chevron-right') %><span><%= L(s, 'name') %></span></nav>
       <div><h1 class="mb2"><%= L(s, 'name') %> <% if (s.is_demo) { %><span class="chip demo"><%= t('common.demo') %></span><% } %></h1>
         <p class="muted mb0"><%= L(s, 'provider') %><% if (s.university_slug) { %> · <a href="/universities/<%= s.university_slug %>"><%= L(s, 'university') %></a><% } %><% if (s.destination_slug) { %> · <a href="/study/<%= s.destination_slug %>"><%= L(s, 'destination') %></a><% } %></p></div>

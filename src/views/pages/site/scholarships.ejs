@@ -1,6 +1,7 @@
+<%- include('../../partials/page-banner', { slot: 'banner_scholarships', title: t('schol.title'), lead: t('schol.lead') }) %>
 <section class="section tight">
   <div class="container">
-    <div class="section-head"><h1><%= t('schol.title') %></h1><p><%= t('schol.lead') %></p></div>
+    <% if (!siteImage('banner_scholarships')) { %><div class="section-head"><h1><%= t('schol.title') %></h1><p><%= t('schol.lead') %></p></div><% } %>
     <form class="toolbar" method="get" action="/scholarships">
       <select name="destination" data-autosubmit aria-label="<%= t('finder.destination') %>"><option value=""><%= t('leads.any_destination') %></option><% dests.forEach(function (d) { %><option value="<%= d.slug %>" <%= query.destination === d.slug ? 'selected' : '' %>><%= L(d, 'name') %></option><% }) %></select>
       <select name="degree" data-autosubmit aria-label="<%= t('finder.degree') %>"><option value=""><%= t('schol.any_degree') %></option><% ref.DEGREES.forEach(function (d) { %><option value="<%= d %>" <%= query.degree === d ? 'selected' : '' %>><%= t('ref.degree.' + d) %></option><% }) %></select>

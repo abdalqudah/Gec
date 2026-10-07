@@ -1,0 +1,10 @@
+<%# Shown to staff who can edit the website, on public pages: quick links to edit what is on screen. %>
+<% var eb = editBar(); var here = typeof editHref !== 'undefined' && editHref ? editHref : null; %>
+<nav class="edit-bar" aria-label="<%= t('siteedit.bar_label') %>">
+  <span class="eb-title"><%- icon('pencil', 'sm') %><%= t('siteedit.bar_title') %></span>
+  <% if (here) { %><a href="<%= here %>"><%- icon('file-text', 'sm') %><%= t('siteedit.edit_content') %></a><% } %>
+  <% if (path === '/') { %><a href="/staff/website/home"><%- icon('layout-template', 'sm') %><%= t('siteedit.edit_sections') %></a><a href="/staff/slides"><%- icon('images', 'sm') %><%= t('nav.slides') %></a><% } %>
+  <a href="/staff/website/texts?page=<%= eb.textsToken %>"><%- icon('type', 'sm') %><%= t('siteedit.edit_texts') %></a>
+  <a href="/staff/website/images"><%- icon('image', 'sm') %><%= t('siteedit.edit_images') %></a>
+  <a href="/staff"><%- icon('layout-dashboard', 'sm') %><%= t('siteedit.workspace') %></a>
+</nav>

@@ -117,7 +117,7 @@ router.get('/programs/:slug', ah(async (req, res) => {
   }
   await events.emit('site.view', { req, type: 'program', id: p.id, title: p.name_en });
   const name = L(req, p, 'name');
-  res.page('pages/site/program', {
+  res.page('pages/site/program', { editHref: `/staff/programs/${p.id}`,
     layout: 'public', p, scholarships, similar: similar.map(finder.shape), match, state: await stateOf(req), md: markdown, pageScripts: ['/js/catalog.js'],
     seo: seoOf(req, res, p, { title: `${name} — ${L(req, p, 'university')}`, description: L(req, p, 'description') || `${req.t(`ref.degree.${p.degree_level}`)} · ${L(req, p, 'university')}`, path: `/programs/${p.slug}`, image: p.cover_image, jsonld: {
       '@context': 'https://schema.org', '@type': 'Course', name, description: (L(req, p, 'description') || '').slice(0, 500) || undefined,
@@ -158,7 +158,7 @@ router.get('/universities/:slug', ah(async (req, res) => {
     knex('scholarships').where({ is_active: true, university_id: u.id }),
   ]);
   await events.emit('site.view', { req, type: 'university', id: u.id, title: u.name_en });
-  res.page('pages/site/university', { heroPage: true,
+  res.page('pages/site/university', { heroPage: true, editHref: `/staff/universities/${u.id}`,
     layout: 'public', u, programs: programs.map(finder.shape), scholarships, state: await stateOf(req), md: markdown, pageScripts: ['/js/catalog.js'],
     seo: seoOf(req, res, u, { title: L(req, u, 'name'), description: L(req, u, 'description'), path: `/universities/${u.slug}`, image: u.cover_image, jsonld: {
       '@context': 'https://schema.org', '@type': 'CollegeOrUniversity', name: L(req, u, 'name'), url: u.website || undefined, logo: u.logo || undefined,
@@ -213,7 +213,7 @@ router.get('/scholarships/:slug', ah(async (req, res) => {
     });
   }
   await events.emit('site.view', { req, type: 'scholarship', id: s.id, title: s.name_en });
-  res.page('pages/site/scholarship', {
+  res.page('pages/site/scholarship', { editHref: `/staff/scholarships/${s.id}`,
     layout: 'public', s, check, state: await stateOf(req), md: markdown, pageScripts: ['/js/catalog.js'],
     seo: seoOf(req, res, s, { title: L(req, s, 'name'), description: L(req, s, 'description') || L(req, s, 'coverage'), path: `/scholarships/${s.slug}` }),
   });
@@ -234,7 +234,7 @@ router.get('/study/:slug', ah(async (req, res) => {
     knex('scholarships').where({ destination_id: d.id, is_active: true }).limit(3),
   ]);
   await events.emit('site.view', { req, type: 'destination', id: d.id, title: d.name_en });
-  res.page('pages/site/destination', { heroPage: true,
+  res.page('pages/site/destination', { heroPage: true, editHref: `/staff/destinations/${d.id}`,
     layout: 'public', d, programs: programs.map(finder.shape), unis, scholarships, state: await stateOf(req), md: markdown, pageScripts: ['/js/catalog.js'],
     seo: seoOf(req, res, d, { title: req.t('dest.study_in', { name: L(req, d, 'name') }), description: L(req, d, 'tagline'), path: `/study/${d.slug}`, image: d.hero_image }),
   });

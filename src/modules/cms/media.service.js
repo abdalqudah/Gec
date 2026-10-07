@@ -10,7 +10,7 @@ const { E } = require('../../core/errors');
 /** Every content column that holds an image address. */
 const IMAGE_COLUMNS = [
   ['destinations', 'hero_image'], ['universities', 'logo'], ['universities', 'cover_image'], ['events', 'image'], ['courses', 'image'],
-  ['articles', 'image'], ['articles', 'og_image'], ['pages', 'hero_image'], ['pages', 'og_image'], ['services', 'og_image'], ['testimonials', 'avatar'], ['hero_slides', 'image'],
+  ['articles', 'image'], ['articles', 'og_image'], ['pages', 'hero_image'], ['pages', 'og_image'], ['services', 'og_image'], ['testimonials', 'avatar'], ['hero_slides', 'image'], ['scholarships', 'image'],
 ];
 const MAX_IMPORT_BYTES = 8 * 1024 * 1024;
 

@@ -15,7 +15,7 @@
         <div class="mock-journey">
           <% ['profile','counselling','application','visa','departure'].forEach(function (k, i) { %><div class="mj <%= i < 2 ? 'done' : i === 2 ? 'now' : '' %>"><span><%- i < 2 ? icon('check', 'sm') : (i + 1) %></span><small><%= t('home.mj_' + k) %></small></div><% }) %>
         </div>
-        <div class="mock-app"><span class="mock-cover" style="<%= cover(null, 'uk') %>"></span><div><strong><%= t('home.mock_program') %></strong><div class="small muted"><%= t('home.mock_uni') %></div></div><span class="chip ok"><%= t('home.mock_offer') %></span></div>
+        <div class="mock-app"><span class="mock-cover" style="<%= cover(siteImage('home_portal'), 'uk') %>"></span><div><strong><%= t('home.mock_program') %></strong><div class="small muted"><%= t('home.mock_uni') %></div></div><span class="chip ok"><%= t('home.mock_offer') %></span></div>
       </div>
       <div class="mock mock-float mock-docs">
         <strong class="small"><%- icon('file-check', 'sm') %> <%= t('home.mock_docs') %></strong>

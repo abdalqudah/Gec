@@ -1,7 +1,8 @@
+<%- include('../../partials/page-banner', { slot: 'banner_programs', title: t('finder.title'), lead: t('finder.lead') }) %>
 <% var f = filters; var degSel = applied.degree, fieldSel = applied.field, destSel = applied.dest; %>
 <section class="section tight" style="padding-bottom:0">
   <div class="container">
-    <h1 class="mb2"><%= t('finder.title') %></h1>
+    <% if (!siteImage('banner_programs')) { %><h1 class="mb2"><%= t('finder.title') %></h1><% } %>
     <form action="/programs" method="get" role="search" class="hero-search" style="max-width:none;margin:0">
       <div class="searchbox"><%- icon('search', 'lg') %><label class="sr-only" for="fq"><%= t('home.search_label') %></label><input id="fq" type="search" name="q" value="<%= f.q %>" placeholder="<%= t('home.search_ph') %>" data-suggest><button class="btn primary" type="submit"><%= t('common.search') %></button></div>
     </form>

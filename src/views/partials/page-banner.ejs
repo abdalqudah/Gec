@@ -1,0 +1,7 @@
+<%# Optional photo banner above a list page (Website → Images → Page banners). Renders nothing when no image is set. %>
+<% var bimg = siteImage(slot); if (bimg) { %>
+<section class="page-banner">
+  <span class="band-bg" style="<%= cover(bimg, 'hero') %>"></span><span class="band-shade"></span>
+  <div class="container"><h1><%= title %></h1><% if (typeof lead !== 'undefined' && lead) { %><p><%= lead %></p><% } %></div>
+</section>
+<% } %>

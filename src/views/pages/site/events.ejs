@@ -1,11 +1,12 @@
+<%- include('../../partials/page-banner', { slot: 'banner_events', title: t('events.title'), lead: t('events.lead') }) %>
 <section class="section">
   <div class="container">
-    <div class="section-head"><span class="eyebrow"><%- icon('ticket') %><%= t('events.eyebrow') %></span><h1><%= t('events.title') %></h1><p><%= t('events.lead') %></p></div>
+    <% if (!siteImage('banner_events')) { %><div class="section-head"><span class="eyebrow"><%- icon('ticket') %><%= t('events.eyebrow') %></span><h1><%= t('events.title') %></h1><p><%= t('events.lead') %></p></div><% } %>
     <% if (!upcoming.length) { %><div class="card mb6"><%- include('../../partials/empty', { title: t('events.none'), text: t('events.none_text'), href: '/book', cta: t('site.book_consultation'), emptyIcon: 'calendar-x' }) %></div><% } else { %>
     <div class="grid-3 mb6">
       <% upcoming.forEach(function (ev, i) { %>
       <a class="card stack" href="/events/<%= ev.slug %>" style="text-decoration:none;color:inherit">
-        <span class="list-cover" style="<%= cover(ev.image, ['hero','campus','scholarship'][i % 3]) %>"></span>
+        <span class="list-cover" style="<%= cover(ev.image || siteImage('default_event'), ['hero','campus','scholarship'][i % 3]) %>"></span>
         <div class="cluster"><span class="chip brand"><%= t('events.type_' + ev.type) %></span><% if (ev.is_demo) { %><span class="chip demo" title="<%= t('common.demo_hint') %>"><%= t('common.demo') %></span><% } %></div>
         <h2 class="mb0" style="font-size:1.1rem"><%= L(ev, 'title') %></h2>
         <div class="small muted"><%- icon('calendar', 'sm') %> <%= fmt.dateTime(ev.starts_at) %></div>

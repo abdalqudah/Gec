@@ -15,18 +15,35 @@ function load() {
 }
 load();
 
+// Texts changed from the workspace (Website → Texts): { en: { key: text }, ar: { … } }. Checked before the files.
+let overrides = { en: {}, ar: {} };
+const setOverrides = (o) => { overrides = { en: { ...(o && o.en) }, ar: { ...(o && o.ar) } }; };
+// Keys looked up while a page renders, for "edit the texts on this page" (only when a recorder is attached).
 const lookup = (dict, key) => key.split('.').reduce((node, part) => (node && typeof node === 'object' ? node[part] : undefined), dict);
 
 function translator(locale) {
   const dict = dictionaries[locale] || dictionaries[config.defaultLocale];
-  return function t(key, vars) {
-    let text = lookup(dict, key);
+  const own = () => overrides[locale] || {};
+  const t = function t(key, vars) {
+    if (t.record) t.record.add(key);
+    let text = own()[key];
+    if (typeof text !== 'string' || !text) text = lookup(dict, key);
     if (typeof text !== 'string') text = lookup(dictionaries.en, key);
     if (typeof text !== 'string') return key;
     if (vars) text = text.replace(/\{(\w+)\}/g, (m, name) => (vars[name] !== undefined && vars[name] !== null ? vars[name] : m));
     return text;
   };
+  return t;
 }
+
+/** Every string key of a locale's files (for the texts editor). */
+function keys(locale = 'en') {
+  const out = [];
+  const walk = (node, prefix) => Object.entries(node).forEach(([k, v]) => { const key = prefix ? `${prefix}.${k}` : k; if (typeof v === 'string') out.push(key); else if (v && typeof v === 'object') walk(v, key); });
+  walk(dictionaries[locale] || {}, '');
+  return out;
+}
+const fileText = (locale, key) => { const v = lookup(dictionaries[locale] || {}, key); return typeof v === 'string' ? v : ''; };
 
 const has = (locale, key) => typeof lookup(dictionaries[locale] || dictionaries.en, key) === 'string';
 
@@ -51,4 +68,4 @@ function translateMessage(locale, message) {
   return table[message] || message;
 }
 
-module.exports = { translator, has, loc, resolveLocale, translateMessage, dictionaries, reload: load };
+module.exports = { translator, has, loc, resolveLocale, translateMessage, dictionaries, reload: load, setOverrides, getOverrides: () => overrides, keys, fileText };

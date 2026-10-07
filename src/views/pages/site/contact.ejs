@@ -1,6 +1,7 @@
+<%- include('../../partials/page-banner', { slot: 'banner_contact', title: t('contact.title'), lead: t('contact.lead') }) %>
 <section class="section">
   <div class="container">
-    <div class="section-head"><h1><%= t('contact.title') %></h1><p><%= t('contact.lead') %></p></div>
+    <% if (!siteImage('banner_contact')) { %><div class="section-head"><h1><%= t('contact.title') %></h1><p><%= t('contact.lead') %></p></div><% } %>
     <div class="split wide-side">
       <div>
         <% if (sent) { %>

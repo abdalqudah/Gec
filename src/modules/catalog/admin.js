@@ -167,7 +167,7 @@ const scholarships = resource({
       { key: 'deadline', label: 'catalog.deadline', type: 'date' }, { key: 'is_active', label: 'common.status', type: 'bool' }],
   },
   sections: [
-    { key: 'basics', fields: [{ name: 'name', type: 'text', bilingual: true, required: true, max: 190 }, { name: 'slug', type: 'slug', hint: 'catalog.slug_hint' }, { name: 'provider', type: 'text', bilingual: true },
+    { key: 'basics', fields: [{ name: 'name', type: 'text', bilingual: true, required: true, max: 190 }, { name: 'slug', type: 'slug', hint: 'catalog.slug_hint' }, { name: 'provider', type: 'text', bilingual: true }, { name: 'image', type: 'image', hint: 'siteedit.schol_image_hint' },
       { name: 'university_id', type: 'select', options: universityOptions }, { name: 'destination_id', type: 'select', options: destinationOptions },
       { name: 'description', type: 'markdown', bilingual: true, rows: 4 }, { name: 'source_url', type: 'url', hint: 'catalog.source_hint' }] },
     { key: 'award', fields: [{ name: 'amount_type', type: 'select', required: true, options: ['fixed', 'percentage', 'full', 'varies'], optionLabel: 'catalog.amount_type' },

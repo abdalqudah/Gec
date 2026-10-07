@@ -1,6 +1,7 @@
+<%- include('../../partials/page-banner', { slot: 'banner_destinations', title: t('dest.title'), lead: t('dest.lead') }) %>
 <section class="section tight">
   <div class="container">
-    <div class="section-head"><h1><%= t('dest.title') %></h1><p><%= t('dest.lead') %></p></div>
+    <% if (!siteImage('banner_destinations')) { %><div class="section-head"><h1><%= t('dest.title') %></h1><p><%= t('dest.lead') %></p></div><% } %>
     <div class="dest-bento">
       <% dests.forEach(function (d, i) { %>
       <a class="dest-tile <%= i === 0 ? 'big' : '' %>" href="/study/<%= d.slug %>">

@@ -1,9 +1,10 @@
+<%- include('../../partials/page-banner', { slot: 'banner_book', title: t('book.title'), lead: '' }) %>
 <% var st = typeof step !== 'undefined' ? step : 1; %>
 <section class="section">
   <div class="container" style="max-width:760px">
     <div class="section-head center">
       <span class="eyebrow"><%- icon('sparkles') %><%= t('book.eyebrow') %></span>
-      <h1><%= t('book.title') %></h1>
+      <% if (!siteImage('banner_book')) { %><h1><%= t('book.title') %></h1><% } %>
       <p><%= t('book.lead') %></p>
       <% if (typeof canSchedule !== 'undefined' && canSchedule) { %><p><a class="btn tonal" href="/book/schedule"><%- icon('calendar-clock') %><%= t('book.pick_time') %></a></p><% } %>
     </div>

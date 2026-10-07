@@ -38,6 +38,7 @@ async function run() {
   await syncSystemRoles();
   await ensureBranch();
   await ensureAdmin();
+  await require('./cms/siteedit').load(); // eslint-disable-line global-require
   await require('./system/github').markLive().catch(() => {}); // eslint-disable-line global-require
   for (const mod of ['./crm/stages', './admissions/stages']) { // configurable pipelines get their defaults
     try { await require(mod).ensureDefaults(); } catch (e) { if (e.code !== 'MODULE_NOT_FOUND') throw e; } // eslint-disable-line global-require

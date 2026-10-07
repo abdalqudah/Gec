@@ -44,6 +44,7 @@ router.use('/', require('../partnerhub/staff.web'));
 router.use('/', require('../admissions/web'));
 router.use('/', require('../booking/web'));
 router.use('/', require('../finance/web'));
+router.use('/', require('../cms/siteedit.web'));
 router.use('/', require('../cms/web'));
 router.use('/', require('../seo/web'));
 router.use('/', require('../marketing/web'));

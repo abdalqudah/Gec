@@ -1,6 +1,7 @@
+<%- include('../../partials/page-banner', { slot: 'banner_universities', title: t('unis.title'), lead: t('unis.lead') }) %>
 <section class="section tight">
   <div class="container">
-    <div class="section-head"><h1><%= t('unis.title') %></h1><p><%= t('unis.lead') %></p></div>
+    <% if (!siteImage('banner_universities')) { %><div class="section-head"><h1><%= t('unis.title') %></h1><p><%= t('unis.lead') %></p></div><% } %>
     <form class="toolbar" method="get" action="/universities">
       <div class="search-inline"><%- icon('search') %><input type="search" name="q" value="<%= query.q || '' %>" placeholder="<%= t('unis.search_ph') %>" aria-label="<%= t('common.search') %>"></div>
       <select name="destination" data-autosubmit aria-label="<%= t('finder.destination') %>"><option value=""><%= t('leads.any_destination') %></option><% dests.forEach(function (d) { %><option value="<%= d.slug %>" <%= query.destination === d.slug ? 'selected' : '' %>><%= L(d, 'name') %></option><% }) %></select>

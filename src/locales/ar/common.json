@@ -155,7 +155,9 @@
     "subscribers": "مشتركو النشرة",
     "utm": "منشئ الروابط (UTM)",
     "system_update": "تحديث النظام",
-    "demo_data": "البيانات التجريبية"
+    "demo_data": "البيانات التجريبية",
+    "site_texts": "نصوص الموقع",
+    "site_images": "صور الموقع"
   },
   "quick": {},
   "palette": {
