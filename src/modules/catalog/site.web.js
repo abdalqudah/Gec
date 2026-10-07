@@ -19,7 +19,7 @@ const { markdown } = require('../../core/markdown');
 
 features.enable('search');
 nav.add({ key: 'programs', href: '/programs', order: 10 });
-nav.add({ key: 'universities', href: '/universities', order: 20 });
+nav.add({ key: 'universities', href: '/universities', order: 20, more: true });
 nav.add({ key: 'destinations', href: '/study', order: 30 });
 nav.add({ key: 'scholarships', href: '/scholarships', order: 40 });
 ['programs', 'universities', 'scholarships'].forEach((k) => footer.add('study', { href: `/${k}`, label: `site.nav.${k}` }));
@@ -62,6 +62,17 @@ async function artFor(req, res, kind) {
 }
 router.get('/art/uni/:slug.svg', ah((req, res) => artFor(req, res, 'cover')));
 router.get('/art/crest/:slug.svg', ah((req, res) => artFor(req, res, 'crest')));
+
+// ------------------------------------------------------------------ Start here: four quick questions, then matching programs
+router.get('/start', ah(async (req, res) => {
+  const dests = await destinationsList();
+  const counts = await knex('programs').where({ is_active: true }).groupBy('degree_level').select('degree_level').count({ n: '*' });
+  const degrees = ref.DEGREES.filter((d) => counts.some((c) => c.degree_level === d && Number(c.n) > 0));
+  res.page('pages/site/start', {
+    layout: 'public', dests, degrees: degrees.length ? degrees : ref.DEGREES, fields: ref.FIELDS.filter((f) => f !== 'other'), budgets: ref.BUDGETS,
+    seo: seoOf(req, res, null, { title: req.t('start.title'), description: req.t('start.lead'), path: '/start' }),
+  });
+}));
 
 // ------------------------------------------------------------------ Home
 router.get('/', ah(async (req, res) => {

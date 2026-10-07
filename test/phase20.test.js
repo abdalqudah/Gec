@@ -28,6 +28,8 @@ test('website texts: any text can be changed in both languages and reset; only w
 test('website images: section backgrounds, page banners and defaults; scholarship photo; unsafe values refused', async () => {
   const m = await staffAgent(marketing);
   assert.equal((await m.get('/staff/website/images?lang=en')).status, 200);
+  const layout = require('../src/modules/cms/home.layout');
+  await layout.save({}, (await layout.load()).map((x) => ({ ...x, visible: true }))); // the scholarships section is off by default
   await form(m, '/staff/website/images', { home_scholarships: '/media/7', banner_scholarships: 'https://cdn.example.com/s.jpg', default_event: '' });
   const v = await agent();
   assert.match((await v.get('/?lang=en')).text, /url\(&#39;\/media\/7&#39;\),url\(&#39;\/img\/covers\/scholarship\.svg&#39;\)/);

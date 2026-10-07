@@ -8,23 +8,28 @@ const { withData } = require('./blocks.data');
 const BUILTIN = ['search', 'destinations', 'journey', 'portal', 'featured', 'scholarships', 'services', 'events', 'testimonials', 'articles', 'cta'];
 const TEXT = ['title_en', 'title_ar', 'lead_en', 'lead_ar'];
 const NO_TITLE = ['search'];
+// The simple home page: these show by default; the rest stay available (switch them on in Website → Home page).
+const DEFAULT_ON = ['search', 'destinations', 'featured', 'services', 'testimonials', 'cta'];
+const VERSION = 2; // layouts saved before the simplification get the new defaults once
 
 /** Stored layout merged with defaults: [{ key, visible, title_en, … } | { key: 'page:ID', page: ID, visible }]. */
 async function load() {
-  const saved = ((await settings.get('home_layout')) || {}).sections || [];
+  const stored = (await settings.get('home_layout')) || {};
+  const saved = stored.sections || [];
+  const fresh = stored.v !== VERSION;
   const out = [];
   for (const s of saved) {
-    if (BUILTIN.includes(s.key) && !out.some((x) => x.key === s.key)) out.push({ ...s, visible: s.visible !== false });
+    if (BUILTIN.includes(s.key) && !out.some((x) => x.key === s.key)) out.push({ ...s, visible: fresh ? DEFAULT_ON.includes(s.key) : s.visible !== false });
     else if (/^page:\d+$/.test(s.key || '')) out.push({ key: s.key, page: Number(s.key.slice(5)), visible: s.visible !== false });
   }
-  BUILTIN.filter((k) => !out.some((x) => x.key === k)).forEach((k) => out.push({ key: k, visible: true }));
+  BUILTIN.filter((k) => !out.some((x) => x.key === k)).forEach((k) => out.push({ key: k, visible: !fresh || DEFAULT_ON.includes(k) }));
   return out;
 }
 
 async function save(ctx, sections) {
   const clean = sections.map((s) => (s.page ? { key: `page:${s.page}`, visible: !!s.visible }
     : { key: s.key, visible: !!s.visible, ...Object.fromEntries(TEXT.map((f) => [f, String(s[f] || '').trim().slice(0, f.startsWith('title') ? 160 : 400)]).filter(([, v]) => v)) }));
-  await settings.set(ctx, 'home_layout', { sections: clean });
+  await settings.set(ctx, 'home_layout', { v: VERSION, sections: clean });
 }
 
 /** For rendering: page sections get their (published) page's visible blocks with data. */
@@ -39,4 +44,4 @@ async function resolve() {
   }));
 }
 
-module.exports = { BUILTIN, TEXT, NO_TITLE, load, save, resolve };
+module.exports = { BUILTIN, DEFAULT_ON, TEXT, NO_TITLE, load, save, resolve };

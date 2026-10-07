@@ -66,6 +66,7 @@ async function locals(req, res, next) {
       siteImage: (key) => require('../modules/cms/siteedit').imageOf(key), // eslint-disable-line global-require
       editBar: editing ? () => ({ textsToken: require('../modules/cms/siteedit').rememberKeys(t.record, req.path) }) : null, // eslint-disable-line global-require
       path: req.path,
+      compareCount: Array.isArray(req.session?.compare) ? req.session.compare.length : 0,
       fullPath: req.originalUrl,
       query: req.query,
       flash: req.session?.flash || [],

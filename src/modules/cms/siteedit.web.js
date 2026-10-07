@@ -7,8 +7,8 @@ const { ah, page: pageNo } = require('../../core/http');
 const nav = require('../staff/nav');
 const svc = require('./siteedit');
 
-nav.add('website', { key: 'site_texts', href: '/staff/website/texts', icon: 'type', perms: ['cms.manage'] });
-nav.add('website', { key: 'site_images', href: '/staff/website/images', icon: 'image', perms: ['cms.manage'] });
+nav.add('website', { key: 'site_texts', href: '/staff/website/texts', icon: 'type', perms: ['cms.manage'] }, { before: 'slides' });
+nav.add('website', { key: 'site_images', href: '/staff/website/images', icon: 'image', perms: ['cms.manage'] }, { before: 'slides' });
 
 const router = express.Router();
 const PER = 40;

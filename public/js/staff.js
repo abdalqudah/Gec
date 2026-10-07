@@ -22,10 +22,14 @@
     }
   });
   doc.addEventListener('keydown', function (e) { if (e.key === 'Escape' && sidebar && sidebar.classList.contains('open')) closeSidebar(); });
-  // Remember folded groups
+  // Groups start folded (except the main ones and the one you are in); your own choice is remembered.
   doc.querySelectorAll('.sb-group').forEach(function (g) {
     var k = 'gec_sbg_' + g.getAttribute('data-group');
-    try { if (localStorage.getItem(k) === '0') g.removeAttribute('open'); } catch (e) { /* ignore */ }
+    try {
+      var v = localStorage.getItem(k);
+      if (v === '1') g.setAttribute('open', '');
+      else if (v === '0' && !g.hasAttribute('data-current')) g.removeAttribute('open');
+    } catch (e) { /* ignore */ }
     g.addEventListener('toggle', function () { try { localStorage.setItem(k, g.open ? '1' : '0'); } catch (e) { /* ignore */ } });
   });
 

@@ -14,7 +14,7 @@ const footer = require('../site/footer');
 const { CATEGORIES } = require('./admin');
 
 nav.add({ key: 'services', href: '/services', order: 35 });
-nav.add({ key: 'resources', href: '/resources', order: 55 });
+nav.add({ key: 'resources', href: '/resources', order: 55, more: true });
 footer.add('company', { href: '/about', label: 'site.nav.about' });
 footer.add('company', { href: '/services', label: 'site.nav.services' });
 footer.add('students', { href: '/visa', label: 'site.nav.visa' });

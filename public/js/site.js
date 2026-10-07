@@ -193,3 +193,45 @@
   function onScroll() { h.classList.toggle('scrolled', window.scrollY > 40 || !document.body.classList.contains('has-hero')); }
   window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
 }());
+
+// Start-here wizard: one question at a time; picking an answer moves on. Without JavaScript all questions show at once.
+(function () {
+  'use strict';
+  var form = document.querySelector('[data-wizard]');
+  if (!form) return;
+  var steps = Array.prototype.slice.call(form.querySelectorAll('.wizard-step'));
+  var back = form.querySelector('[data-wizard-back]');
+  var next = form.querySelector('[data-wizard-next]');
+  var submit = form.querySelector('[data-wizard-submit]');
+  var bar = form.querySelector('[data-wizard-bar]');
+  var count = form.querySelector('[data-wizard-count]');
+  var ar = document.documentElement.lang === 'ar';
+  var i = 0;
+  form.classList.add('js');
+  function show(n, focus) {
+    i = Math.max(0, Math.min(n, steps.length - 1));
+    steps.forEach(function (s, k) { s.classList.toggle('on', k === i); });
+    back.hidden = i === 0;
+    next.hidden = i === steps.length - 1;
+    submit.hidden = i !== steps.length - 1;
+    bar.style.width = ((i + 1) / steps.length * 100) + '%';
+    count.hidden = false;
+    count.textContent = ar ? ('السؤال ' + (i + 1) + ' من ' + steps.length) : ('Question ' + (i + 1) + ' of ' + steps.length);
+    if (focus) {
+      var top = form.getBoundingClientRect().top + window.pageYOffset - 90;
+      if (window.pageYOffset > top) window.scrollTo({ top: top, behavior: 'smooth' });
+      var picked = steps[i].querySelector('input:checked');
+      var f = picked && picked.value ? picked : steps[i].querySelector('input');
+      if (f) f.focus({ preventScroll: true });
+    }
+  }
+  back.addEventListener('click', function () { show(i - 1, true); });
+  next.addEventListener('click', function () { show(i + 1, true); });
+  form.addEventListener('click', function (e) {
+    // a pointer pick moves on; keyboard arrows only change the choice
+    var tile = e.target.closest('.tile');
+    if (!tile || e.detail === 0) return;
+    setTimeout(function () { if (i < steps.length - 1) show(i + 1, true); else submit.focus(); }, 180);
+  });
+  show(0, false);
+}());

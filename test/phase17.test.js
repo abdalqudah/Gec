@@ -71,7 +71,7 @@ test('public page renders the blocks; staff can preview before publishing', asyn
 test('home page sections: reorder, hide, rename, and add a page’s blocks', async () => {
   const v = await agent();
   let home = (await v.get('/?lang=en')).text;
-  assert.ok(home.indexOf('dest-bento') < home.indexOf('journey-steps'), 'default order');
+  assert.ok(home.indexOf('dest-bento') > 0 && home.indexOf('journey-steps') < 0, 'simple default: journey is off');
   const m = await staffAgent(marketing);
   const layout = await require('../src/modules/cms/home.layout').load();
   const body = { op: 'up:2' };

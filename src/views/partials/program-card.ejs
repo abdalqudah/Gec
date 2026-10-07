@@ -10,19 +10,15 @@
     </div>
     <% if (p.is_demo) { %><span class="chip demo" title="<%= t('common.demo_hint') %>"><%= t('common.demo') %></span><% } %>
   </div>
-  <dl class="facts">
-    <div><dt><%= t('finder.degree') %></dt><dd><%= t('ref.degree.' + p.degree_level) %></dd></div>
+  <dl class="facts facts-3">
     <div><dt><%= t('finder.tuition') %></dt><dd><%= p.tuition_fee ? fmt.money(p.tuition_fee, p.currency) + t('common.per_year') : t('finder.ask') %></dd></div>
-    <div><dt><%= t('finder.duration') %></dt><dd><%= p.duration_months ? t('finder.months', { n: p.duration_months }) : '—' %></dd></div>
-    <div><dt><%= t('finder.intakes') %></dt><dd><%= intakes.join(', ') || '—' %></dd></div>
-    <div><dt><%= t('finder.english') %></dt><dd><%= p.min_ielts ? 'IELTS ' + p.min_ielts : (p.min_toefl ? 'TOEFL ' + p.min_toefl : '—') %></dd></div>
-    <div><dt><%= t('finder.deadline') %></dt><dd><%= p.next_deadline ? fmt.date(p.next_deadline, { day: 'numeric', month: 'short', year: 'numeric' }) : '—' %></dd></div>
+    <div><dt><%= t('finder.duration') %></dt><dd><% var dm = p.duration_months, yr = dm && dm % 12 === 0 ? dm / 12 : 0; %><%= !dm ? '—' : yr === 1 ? t('finder.years_1') : yr === 2 ? t('finder.years_2') : yr ? t('finder.years_n', { n: yr }) : t('finder.months', { n: dm }) %></dd></div>
+    <div><dt><%= t('finder.intakes') %></dt><dd><%= intakes.slice(0, 2).join(locale === 'ar' ? '، ' : ', ') || '—' %></dd></div>
   </dl>
   <div class="cluster" style="--gap:6px">
+    <span class="chip"><%- icon('graduation-cap') %><%= t('ref.degree.' + p.degree_level) %></span>
     <% if (p.scholarships_available) { %><span class="chip ok"><%- icon('award') %><%= t('finder.scholarships') %></span><% } %>
     <% if (p.work_after_study) { %><span class="chip info"><%- icon('briefcase') %><%= t('finder.work_after') %></span><% } %>
-    <% if (p.internship && p.internship !== 'none') { %><span class="chip"><%= t('catalog.internship.' + p.internship) %></span><% } %>
-    <% if (p.study_mode !== 'on_campus') { %><span class="chip"><%= t('ref.mode.' + p.study_mode) %></span><% } %>
   </div>
   <% if (typeof match !== 'undefined' && match) { %><div><%- include('match-chip', { m: match }) %></div><% } %>
   <div class="pcard-foot">

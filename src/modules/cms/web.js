@@ -11,6 +11,7 @@ const settings = require('../settings/settings.service');
 const nav = require('../staff/nav');
 const admin = require('./admin');
 
+nav.add('website', { key: 'home_page', href: '/staff/website/home', icon: 'house', perms: ['cms.manage'] });
 nav.add('website', { key: 'slides', href: '/staff/slides', icon: 'images', perms: ['cms.manage'] });
 nav.add('website', { key: 'pages', href: '/staff/pages', icon: 'file-text', perms: ['cms.manage'] });
 nav.add('website', { key: 'articles', href: '/staff/articles', icon: 'newspaper', perms: ['cms.manage'] });
@@ -19,7 +20,6 @@ nav.add('website', { key: 'faqs', href: '/staff/faqs', icon: 'circle-help', perm
 nav.add('website', { key: 'testimonials', href: '/staff/testimonials', icon: 'quote', perms: ['cms.manage'] });
 nav.add('website', { key: 'navigation', href: '/staff/navigation', icon: 'menu', perms: ['cms.manage'] });
 nav.add('website', { key: 'media', href: '/staff/media', icon: 'image', perms: ['cms.manage'] });
-nav.add('website', { key: 'home_page', href: '/staff/website/home', icon: 'house', perms: ['cms.manage'] });
 
 const homeLayout = require('./home.layout');
 

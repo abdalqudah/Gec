@@ -40,6 +40,12 @@
       "study": "Study",
       "company": "GEC",
       "students": "Students"
+    },
+    "bar": {
+      "find": "Find",
+      "whatsapp": "WhatsApp",
+      "book": "Book",
+      "label": "Quick navigation"
     }
   },
   "privacy": {

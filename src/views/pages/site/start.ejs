@@ -1,0 +1,36 @@
+<% var steps = [
+  { name: 'degree', title: t('start.q_degree'), opts: degrees.map(function (d) { return { v: d, label: t('ref.degree.' + d) }; }) },
+  { name: 'field', title: t('start.q_field'), opts: fields.map(function (f) { return { v: f, label: t('ref.field.' + f) }; }) },
+  { name: 'destination', title: t('start.q_where'), opts: dests.map(function (d) { return { v: d.slug, label: L(d, 'name'), flag: d.country_code }; }), any: t('start.anywhere') },
+  { name: 'max_tuition', title: t('start.q_budget'), opts: budgets.filter(function (b) { return b[2]; }).map(function (b) { return { v: b[2], label: t('start.up_to', { n: fmt.money(b[2], 'USD', 0) }) }; }), any: t('start.no_limit') },
+]; %>
+<section class="section tight">
+  <div class="container narrow-wizard">
+    <header class="wizard-head">
+      <h1><%= t('start.title') %></h1>
+      <p class="lead muted"><%= t('start.lead') %></p>
+    </header>
+    <form class="wizard" method="get" action="/programs" data-wizard>
+      <div class="wizard-progress" aria-hidden="true"><span data-wizard-bar></span></div>
+      <p class="small muted" data-wizard-count hidden></p>
+      <% steps.forEach(function (st, i) { %>
+      <fieldset class="wizard-step" data-step="<%= i %>">
+        <legend><span class="wizard-num"><%= i + 1 %></span><%= st.title %></legend>
+        <div class="tile-grid">
+          <% st.opts.forEach(function (o) { %>
+          <label class="tile"><input type="radio" name="<%= st.name %>" value="<%= o.v %>"><span><% if (o.flag) { %><%- flagImg(o.flag) %> <% } %><%= o.label %></span></label>
+          <% }) %>
+          <label class="tile tile-soft"><input type="radio" name="<%= st.name %>" value="" checked><span><%= st.any || t('start.not_sure') %></span></label>
+        </div>
+      </fieldset>
+      <% }) %>
+      <div class="wizard-nav">
+        <button type="button" class="btn ghost" data-wizard-back hidden><%- icon(dir === 'rtl' ? 'arrow-right' : 'arrow-left') %><%= t('start.back') %></button>
+        <span class="grow"></span>
+        <button type="button" class="btn" data-wizard-next hidden><%= t('start.next') %><%- icon(dir === 'rtl' ? 'arrow-left' : 'arrow-right') %></button>
+        <button type="submit" class="btn primary" data-wizard-submit><%- icon('search') %><%= t('start.show') %></button>
+      </div>
+    </form>
+    <p class="center small muted mt6"><%= t('start.or_talk') %> <a href="/book"><%= t('site.book_consultation') %></a></p>
+  </div>
+</section>

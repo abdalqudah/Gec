@@ -40,6 +40,12 @@
       "study": "الدراسة",
       "company": "GEC",
       "students": "الطلاب"
+    },
+    "bar": {
+      "find": "ابحث",
+      "whatsapp": "واتساب",
+      "book": "احجز",
+      "label": "تنقل سريع"
     }
   },
   "privacy": {

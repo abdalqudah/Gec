@@ -9,6 +9,7 @@
           <button class="btn primary" type="submit"><%= t('common.search') %></button>
         </div>
       </form>
+      <a class="start-link" href="/start"><span class="start-ico"><%- icon('sparkles') %></span><span class="grow"><strong><%= t('start.cta') %></strong><span class="small muted"><%= t('start.cta_hint') %></span></span><%- icon(dir === 'rtl' ? 'arrow-left' : 'arrow-right') %></a>
       <div class="hero-chips">
         <span class="small muted"><%= t('home.popular') %></span>
         <% [['master','data_science'],['bachelor','computer_science'],['master','business'],['bachelor','engineering'],['language','english']].forEach(function (c) { %>

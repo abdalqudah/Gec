@@ -6,6 +6,7 @@
     <form action="/programs" method="get" role="search" class="hero-search" style="max-width:none;margin:0">
       <div class="searchbox"><%- icon('search', 'lg') %><label class="sr-only" for="fq"><%= t('home.search_label') %></label><input id="fq" type="search" name="q" value="<%= f.q %>" placeholder="<%= t('home.search_ph') %>" data-suggest><button class="btn primary" type="submit"><%= t('common.search') %></button></div>
     </form>
+    <% if (!Object.keys(query).length) { %><p class="small mt2"><%- icon('sparkles', 'sm') %> <%= t('start.cta_hint') %> <a href="/start"><%= t('start.cta') %></a></p><% } %>
     <% if (parsed && (parsed.degree || parsed.field || parsed.destination)) { %>
       <p class="small muted mt2"><%- icon('sparkles', 'sm') %> <%= t('finder.understood') %>
         <% if (parsed.degree) { %><span class="chip brand"><%= t('ref.degree.' + parsed.degree) %></span><% } %>
@@ -23,15 +24,18 @@
         <div class="spread mb4"><h2 style="font-size:1rem;margin:0"><%= t('finder.filters') %></h2><a class="small" href="/programs<%= f.q ? '?q=' + encodeURIComponent(f.q) : '' %>"><%= t('common.clear') %></a></div>
         <div class="filters-body">
           <fieldset class="field"><legend class="label"><%= t('finder.degree') %></legend><div class="stack" style="--gap:6px">
-            <% ref.DEGREES.forEach(function (d) { %><label class="check"><input type="checkbox" name="degree" value="<%= d %>" <%= degSel.indexOf(d) >= 0 ? 'checked' : '' %>><span><%= t('ref.degree.' + d) %> <span class="subtle small">(<%= facets.degree[d] || 0 %>)</span></span></label><% }) %>
+            <% ref.DEGREES.filter(function (d) { return facets.degree[d] || degSel.indexOf(d) >= 0; }).forEach(function (d) { %><label class="check"><input type="checkbox" name="degree" value="<%= d %>" <%= degSel.indexOf(d) >= 0 ? 'checked' : '' %>><span><%= t('ref.degree.' + d) %> <span class="subtle small">(<%= facets.degree[d] || 0 %>)</span></span></label><% }) %>
           </div></fieldset>
           <fieldset class="field"><legend class="label"><%= t('finder.destination') %></legend><div class="stack" style="--gap:6px">
             <% dests.forEach(function (d) { %><label class="check"><input type="checkbox" name="destination" value="<%= d.slug %>" <%= destSel.indexOf(d.slug) >= 0 ? 'checked' : '' %>><span><%- flagImg(d.country_code) %> <%= L(d, 'name') %> <span class="subtle small">(<%= facets.destination[d.slug] || 0 %>)</span></span></label><% }) %>
           </div></fieldset>
           <div class="field"><label for="ff"><%= t('finder.field') %></label><select id="ff" name="field"><option value=""><%= t('common.any') %></option><% ref.FIELDS.forEach(function (x) { %><option value="<%= x %>" <%= fieldSel.indexOf(x) >= 0 ? 'selected' : '' %>><%= t('ref.field.' + x) %></option><% }) %></select></div>
+          <div class="field"><label for="ft"><%= t('finder.max_tuition') %></label><input id="ft" type="number" name="max_tuition" min="0" step="1000" value="<%= f.max_tuition || '' %>" placeholder="30000"><span class="hint"><%= t('finder.usd_note') %></span></div>
+          <label class="check"><input type="checkbox" name="scholarship" value="1" <%= f.scholarship ? 'checked' : '' %>><span><%= t('finder.with_scholarships') %></span></label>
+          <% var adv = f.university || f.city || f.intake.length || f.duration || f.mode.length || f.ielts || f.toefl || f.pte || f.max_app_fee !== null || f.internship || f.work; %>
+          <details class="more-filters" <%= adv ? 'open' : '' %>><summary><%- icon('sliders-horizontal') %><%= t('finder.more_filters') %></summary><div class="stack" style="--gap:14px">
           <div class="field"><label for="fu"><%= t('catalog.university') %></label><select id="fu" name="university"><option value=""><%= t('common.any') %></option><% unis.forEach(function (u) { %><option value="<%= u.id %>" <%= f.university === u.id ? 'selected' : '' %>><%= L(u, 'name') %></option><% }) %></select></div>
           <div class="field"><label for="fc"><%= t('common.city') %></label><input id="fc" name="city" value="<%= f.city %>"></div>
-          <div class="field"><label for="ft"><%= t('finder.max_tuition') %></label><input id="ft" type="number" name="max_tuition" min="0" step="1000" value="<%= f.max_tuition || '' %>" placeholder="30000"><span class="hint"><%= t('finder.usd_note') %></span></div>
           <div class="field"><label for="fi"><%= t('finder.intake_month') %></label><select id="fi" name="intake"><option value=""><%= t('common.any') %></option><% for (var m = 1; m <= 12; m++) { %><option value="<%= m %>" <%= f.intake.indexOf(m) >= 0 ? 'selected' : '' %>><%= ref.month('2026-' + String(m).padStart(2, '0')).split(' ')[0] %></option><% } %></select></div>
           <div class="field"><label for="fd"><%= t('finder.duration') %></label><select id="fd" name="duration"><option value=""><%= t('common.any') %></option><% ['short','mid','long'].forEach(function (x) { %><option value="<%= x %>" <%= f.duration === x ? 'selected' : '' %>><%= t('finder.dur_' + x) %></option><% }) %></select></div>
           <div class="field"><label for="fm"><%= t('finder.mode') %></label><select id="fm" name="mode"><option value=""><%= t('common.any') %></option><% ref.STUDY_MODES.forEach(function (x) { %><option value="<%= x %>" <%= f.mode.indexOf(x) >= 0 ? 'selected' : '' %>><%= t('ref.mode.' + x) %></option><% }) %></select></div>
@@ -40,10 +44,10 @@
             <span class="hint"><%= t('finder.english_hint') %></span></div>
           <div class="field"><label for="fa"><%= t('finder.app_fee') %></label><select id="fa" name="max_app_fee"><option value=""><%= t('common.any') %></option><option value="0" <%= f.max_app_fee === 0 ? 'selected' : '' %>><%= t('finder.no_fee') %></option><option value="50" <%= f.max_app_fee === 50 ? 'selected' : '' %>>≤ 50</option><option value="100" <%= f.max_app_fee === 100 ? 'selected' : '' %>>≤ 100</option></select></div>
           <div class="stack" style="--gap:8px">
-            <label class="check"><input type="checkbox" name="scholarship" value="1" <%= f.scholarship ? 'checked' : '' %>><span><%= t('finder.with_scholarships') %></span></label>
             <label class="check"><input type="checkbox" name="internship" value="1" <%= f.internship ? 'checked' : '' %>><span><%= t('finder.with_internship') %></span></label>
             <label class="check"><input type="checkbox" name="work" value="1" <%= f.work ? 'checked' : '' %>><span><%= t('finder.with_work') %></span></label>
           </div>
+          </div></details>
           <button class="btn primary block mt4" type="submit"><%= t('finder.apply') %></button>
         </div>
       </form>

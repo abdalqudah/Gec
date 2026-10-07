@@ -14,7 +14,8 @@
     <div class="sb-brand"><a href="/staff" aria-label="<%= branding.name %>"><%- include('../partials/logo', { height: 32 }) %></a></div>
     <nav class="sb-nav">
       <% (typeof nav !== 'undefined' ? nav : []).forEach(function (g) { %>
-      <details class="sb-group" open data-group="<%= g.key %>">
+      <% var hasCur = g.items.some(function (i) { return i.current; }); %>
+      <details class="sb-group" <%= hasCur || ['overview', 'crm'].indexOf(g.key) >= 0 ? 'open' : '' %> data-group="<%= g.key %>" <%- hasCur ? 'data-current' : '' %>>
         <summary><span><%= t('nav.groups.' + g.key) %></span><%- icon('chevron-down') %></summary>
         <% g.items.forEach(function (i) { %>
         <a class="sb-link" href="<%= i.href %>" <%- i.current ? 'aria-current="page"' : '' %> title="<%= t('nav.' + i.key) %>"><%- icon(i.icon) %><span><%= t('nav.' + i.key) %></span><% if (i.count) { %><span class="badge-n"><%= i.count > 99 ? '99+' : i.count %></span><% } %></a>

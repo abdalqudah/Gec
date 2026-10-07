@@ -23,7 +23,7 @@
     "step_visa_text": "Visa preparation, accommodation and pre-departure briefing.",
     "featured_title": "Featured programs",
     "featured_lead": "Popular choices from our partner universities.",
-    "explore_all": "Explore all programs",
+    "explore_all": "See all programs",
     "schol_title": "Scholarships",
     "schol_lead": "Funding you may be eligible for — check the criteria in seconds.",
     "cta_title": "Not sure where to start?",
@@ -130,7 +130,11 @@
     "ask": "Ask us",
     "scholarships": "Scholarships",
     "work_after": "Work after study",
-    "view_program": "View program"
+    "view_program": "View program",
+    "more_filters": "More filters",
+    "years_1": "1 year",
+    "years_2": "2 years",
+    "years_n": "{n} years"
   },
   "program": {
     "about": "About the program",
@@ -727,5 +731,23 @@
       "empty_text": "Add a slide to replace them with your own.",
       "related": "Related"
     }
+  },
+  "start": {
+    "title": "Start here",
+    "lead": "Answer 4 quick questions and we will show programs that fit you.",
+    "q_degree": "What do you want to study?",
+    "q_field": "In which field?",
+    "q_where": "Where would you like to study?",
+    "q_budget": "What is your yearly tuition budget?",
+    "not_sure": "Not sure yet",
+    "anywhere": "Any country",
+    "no_limit": "No limit",
+    "up_to": "Up to {n}",
+    "back": "Back",
+    "next": "Next",
+    "show": "Show matching programs",
+    "or_talk": "Prefer to talk to a person?",
+    "cta": "Start here",
+    "cta_hint": "Not sure where to begin? Answer 4 quick questions."
   }
 }

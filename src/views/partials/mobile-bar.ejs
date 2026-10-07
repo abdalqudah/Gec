@@ -1,0 +1,11 @@
+<% var feat = site.features; var student = currentUser && currentUser.kind === 'student';
+   var on = function (h) { return path === h || path.indexOf(h + '/') === 0; };
+   var items = [{ href: '/', icon: 'house', label: t('site.home'), cur: path === '/' }];
+   if (feat.has('search')) items.push({ href: '/programs', icon: 'search', label: t('site.bar.find'), cur: on('/programs') || on('/search') });
+   items.push({ href: student ? '/portal/shortlist' : '/shortlist', icon: 'heart', label: t('site.nav.shortlist'), cur: on('/shortlist') || on('/portal/shortlist') });
+   items.push({ href: '/compare', icon: 'git-compare-arrows', label: t('site.nav.compare'), cur: on('/compare'), badge: compareCount });
+   if (company.whatsapp) items.push({ href: '/go/whatsapp?from=' + encodeURIComponent(path), icon: 'message-circle', label: t('site.bar.whatsapp'), wa: true });
+   else if (feat.has('book')) items.push({ href: '/book', icon: 'calendar-check', label: t('site.bar.book'), cur: on('/book') }); %>
+<nav class="mobile-bar" aria-label="<%= t('site.bar.label') %>">
+  <% items.forEach(function (it) { %><a href="<%= it.href %>" class="<%= it.wa ? 'wa' : '' %>" <%- it.cur ? 'aria-current="page"' : '' %><%- it.wa ? ' target="_blank" rel="noopener" data-track="whatsapp_click"' : '' %>><span class="mb-ico"><%- icon(it.icon) %><% if (it.badge !== undefined) { %><span class="mb-badge" data-compare-count <%= it.badge ? '' : 'hidden' %>><%= it.badge %></span><% } %></span><span class="mb-label"><%= it.label %></span></a><% }) %>
+</nav>
