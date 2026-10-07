@@ -577,3 +577,16 @@ body.site:not(.has-hero) main > section:first-child .section-head h1 { font-size
 @media (max-width: 760px) and (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .mobile-bar a.wa { color: #6fd69a; } }
 @media (max-width: 999px) { .filters:not(.open) { display: none; } }
 @media (max-width: 640px) { .tile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; } .tile span { min-height: 48px; padding: 8px 12px; font-size: .92rem; } .wizard { padding: 18px 16px; } }
+
+/* Carousel (card rails) */
+.carousel { position: relative; }
+.carousel.ready .rail { scrollbar-width: none; padding-bottom: 8px; }
+.carousel.ready .rail::-webkit-scrollbar { display: none; }
+.carousel-btn { position: absolute; top: 42%; transform: translateY(-50%); z-index: 3; width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--text); box-shadow: var(--shadow-2); display: grid; place-items: center; cursor: pointer; transition: opacity .2s, transform .15s; }
+.carousel-btn:hover:not(:disabled) { transform: translateY(-50%) scale(1.06); }
+.carousel-btn:disabled { opacity: 0; pointer-events: none; }
+.carousel-btn .icon { width: 22px; height: 22px; }
+.carousel-btn.prev { inset-inline-start: -18px; }
+.carousel-btn.next { inset-inline-end: -18px; }
+.carousel.static .carousel-btn { display: none; }
+@media (max-width: 700px) { .carousel-btn { width: 40px; height: 40px; } .carousel-btn.prev { inset-inline-start: -6px; } .carousel-btn.next { inset-inline-end: -6px; } }

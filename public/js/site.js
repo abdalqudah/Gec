@@ -235,3 +235,42 @@
   });
   show(0, false);
 }());
+
+// Card rails become carousels: previous / next arrows that follow the reading direction (RTL in Arabic), snap to
+// whole cards, and dim at the ends. Without JavaScript the rail still scrolls by swipe or trackpad.
+(function () {
+  'use strict';
+  var ar = document.documentElement.lang === 'ar';
+  var rtl = document.documentElement.dir === 'rtl';
+  var icon = function (name) { return window.GEC && GEC.icon ? GEC.icon(name) : ''; };
+  document.querySelectorAll('.rail').forEach(function (rail) {
+    if (rail.closest('.carousel')) return;
+    var wrap = document.createElement('div');
+    wrap.className = 'carousel';
+    rail.parentNode.insertBefore(wrap, rail);
+    wrap.appendChild(rail);
+    var mk = function (cls, label, ic) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'carousel-btn ' + cls; b.setAttribute('aria-label', label); b.innerHTML = icon(ic);
+      wrap.appendChild(b); return b;
+    };
+    // "previous" sits at the start side (right in Arabic) and points outward.
+    var prev = mk('prev', ar ? 'السابق' : 'Previous', rtl ? 'chevron-right' : 'chevron-left');
+    var next = mk('next', ar ? 'التالي' : 'Next', rtl ? 'chevron-left' : 'chevron-right');
+    var step = function () { var it = rail.querySelector('.rail-item'); var gap = parseFloat(getComputedStyle(rail).columnGap) || 0; return it ? it.getBoundingClientRect().width + gap : rail.clientWidth * 0.8; };
+    var go = function (n) { rail.scrollBy({ left: (rtl ? -1 : 1) * n * step(), behavior: 'smooth' }); };
+    prev.addEventListener('click', function () { go(-1); });
+    next.addEventListener('click', function () { go(1); });
+    var sync = function () {
+      var pos = Math.abs(rail.scrollLeft);
+      var max = rail.scrollWidth - rail.clientWidth;
+      prev.disabled = pos <= 10;
+      next.disabled = pos >= max - 10;
+      wrap.classList.toggle('static', max <= 10);
+    };
+    rail.addEventListener('scroll', function () { window.requestAnimationFrame(sync); }, { passive: true });
+    window.addEventListener('resize', sync);
+    wrap.classList.add('ready');
+    sync();
+  });
+}());
