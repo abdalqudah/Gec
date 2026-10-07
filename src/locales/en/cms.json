@@ -100,6 +100,12 @@
       "services": "Service",
       "testimonials": "Testimonial",
       "settings": "Branding"
-    }
+    },
+    "upload_new": "Upload a new image",
+    "upload_use": "Upload and use",
+    "upload_hint": "PNG, JPG, WebP or GIF up to 8 MB. It is added to the media library.",
+    "uploading": "Uploading…",
+    "upload_failed": "The upload failed. Check the file type and size (8 MB max).",
+    "search_library": "Or search the library…"
   }
 }

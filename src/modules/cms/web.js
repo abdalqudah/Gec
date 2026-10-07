@@ -61,11 +61,22 @@ router.get('/media', can('cms.manage'), ah(async (req, res) => {
   const [lib, external] = await Promise.all([media.list({ q: req.query.q, page }), media.externalImages()]);
   res.page('pages/staff/cms/media', { layout: 'staff', title: req.t('nav.media'), lib, external, meta: { total: lib.total, page: lib.page, pages: lib.pages } });
 }));
-router.get('/media/picker.json', can('cms.manage'), ah(async (req, res) => {
+router.get('/media/picker.json', can('cms.manage', 'catalog.manage'), ah(async (req, res) => {
   const lib = await media.list({ q: req.query.q, per: 60 });
   res.json({ data: lib.rows.map((m) => ({ id: m.id, url: m.url, name: m.original_name, alt: (req.locale === 'ar' && m.alt_ar) || m.alt_en || '' })) });
 }));
 allowMultipart(/^\/staff\/media\/?$/);
+allowMultipart(/^\/staff\/media\/picker-upload\/?$/);
+// Upload from the image picker (any "Choose from library" button): answers with the new image's address.
+router.post('/media/picker-upload', can('cms.manage', 'catalog.manage'), uploads.single('file', { maxMb: 8 }), ah(async (req, res) => {
+  try {
+    const id = await media.upload(req.ctx, req.file, validate(z.object({ alt_en: str(255), alt_ar: str(255) }), req.body));
+    res.json({ ok: true, id, url: media.urlOf(id) });
+  } catch (e) {
+    if (!e.status || e.status >= 500) throw e;
+    res.status(e.status).json({ ok: false, message: req.t(`errors.${e.code}`) !== `errors.${e.code}` ? req.t(`errors.${e.code}`) : e.message });
+  }
+}));
 router.post('/media', can('cms.manage'), uploads.single('file', { maxMb: 8 }), ah(async (req, res) => {
   const id = await media.upload(req.ctx, req.file, validate(z.object({ alt_en: str(255), alt_ar: str(255) }), req.body));
   flash(req, 'ok', req.t('media.uploaded'));

@@ -1,0 +1,14 @@
+<%# Image picker for every "Choose from library" button in the workspace: pick from the media library or upload a new image. %>
+<dialog class="dialog wide" id="media-picker" aria-labelledby="media-picker-title" data-empty="<%= t('media.empty') %>" data-uploading="<%= t('media.uploading') %>" data-upload-failed="<%= t('media.upload_failed') %>">
+  <div class="dialog-head"><h2 id="media-picker-title"><%= t('media.choose') %></h2><button type="button" class="btn ghost icon-only" data-dialog-close aria-label="<%= t('common.close') %>"><%- icon('x') %></button></div>
+  <div class="dialog-body stack">
+    <div class="picker-upload">
+      <label for="mp-file"><%= t('media.upload_new') %></label>
+      <div class="cluster"><input id="mp-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" data-media-file><input type="text" data-media-alt placeholder="<%= t('media.alt_en') %>" aria-label="<%= t('media.alt_en') %>"><button type="button" class="btn primary sm" data-media-upload><%- icon('upload') %><%= t('media.upload_use') %></button></div>
+      <p class="small muted mb0" data-media-status role="status"><%= t('media.upload_hint') %></p>
+    </div>
+    <input type="search" data-media-search placeholder="<%= t('media.search_library') %>" aria-label="<%= t('media.search_library') %>">
+    <div class="media-grid" data-media-results></div>
+    <p class="small muted mb0"><a href="/staff/media" target="_blank" rel="noopener"><%= t('media.open_library') %></a></p>
+  </div>
+</dialog>

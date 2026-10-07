@@ -184,12 +184,14 @@ document.addEventListener('click', function (e) {
   });
 }());
 
-// Media picker: <button data-media-pick="#input"> opens the library and fills the image address.
+// Media picker: <button data-media-pick="#input"> opens the library (or uploads a new image) and fills the address.
 (function () {
   var dlg = document.getElementById('media-picker');
   if (!dlg) return;
   var target = null; var timer;
   var box = dlg.querySelector('[data-media-results]'); var search = dlg.querySelector('[data-media-search]');
+  var file = dlg.querySelector('[data-media-file]'); var alt = dlg.querySelector('[data-media-alt]'); var status = dlg.querySelector('[data-media-status]');
+  var hint = status ? status.textContent : '';
   function load() {
     fetch('/staff/media/picker.json?q=' + encodeURIComponent(search.value || ''), { headers: { Accept: 'application/json' }, credentials: 'same-origin' })
       .then(function (r) { return r.json(); }).then(function (j) {
@@ -198,15 +200,33 @@ document.addEventListener('click', function (e) {
           : '<p class="muted">' + GEC.esc(dlg.getAttribute('data-empty')) + '</p>';
       }).catch(function () { box.innerHTML = ''; });
   }
+  function use(url) {
+    if (!target) return;
+    target.value = url;
+    target.dispatchEvent(new Event('input', { bubbles: true }));
+    var prev = document.querySelector('[data-media-preview="#' + target.id + '"]'); if (prev) prev.src = url;
+    var bg = document.querySelector('[data-media-preview-bg="#' + target.id + '"]'); if (bg) bg.style.backgroundImage = 'url("' + url.replace(/["\\]/g, '') + '")';
+    dlg.close(); target.focus();
+  }
   document.addEventListener('click', function (e) {
     var b = e.target.closest('[data-media-pick]');
-    if (b) { target = document.querySelector(b.getAttribute('data-media-pick')); dlg.showModal(); load(); search.focus(); return; }
+    if (b) { target = document.querySelector(b.getAttribute('data-media-pick')); if (status) status.textContent = hint; dlg.showModal(); load(); search.focus(); return; }
     var tile = e.target.closest('#media-picker [data-url]');
-    if (tile && target) {
-      target.value = tile.getAttribute('data-url');
-      target.dispatchEvent(new Event('input', { bubbles: true }));
-      var prev = document.querySelector('[data-media-preview="#' + target.id + '"]'); if (prev) prev.src = target.value;
-      dlg.close(); target.focus();
+    if (tile) { use(tile.getAttribute('data-url')); return; }
+    if (e.target.closest('[data-media-upload]')) {
+      if (!file || !file.files || !file.files[0]) { file.focus(); return; }
+      var fd = new FormData();
+      fd.append('_csrf', document.body.getAttribute('data-csrf') || '');
+      fd.append('alt_en', alt ? alt.value : '');
+      fd.append('file', file.files[0]);
+      status.textContent = dlg.getAttribute('data-uploading');
+      fetch('/staff/media/picker-upload', { method: 'POST', body: fd, credentials: 'same-origin', headers: { Accept: 'application/json' } })
+        .then(function (r) { return r.json().then(function (j) { return { ok: r.ok && j.ok, j: j }; }); })
+        .then(function (res) {
+          if (!res.ok) { status.textContent = (res.j && (res.j.message || (res.j.error && res.j.error.message))) || dlg.getAttribute('data-upload-failed'); return; }
+          file.value = ''; if (alt) alt.value = ''; use(res.j.url);
+        })
+        .catch(function () { status.textContent = dlg.getAttribute('data-upload-failed'); });
     }
   });
   search.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(load, 200); });

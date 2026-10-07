@@ -57,3 +57,19 @@ test('edit bar: website editors see links to edit this page; visitors and other 
   const c = await staffAgent(await makeStaff({ role: 'counsellor' }));
   assert.doesNotMatch((await c.get(`/universities/${u.slug}`)).text, /class="edit-bar"/);
 });
+
+test('image picker: available on every editing page; upload from the picker answers with the new address', async () => {
+  const m = await staffAgent(marketing);
+  for (const url of ['/staff/website/images', '/staff/website/home', '/staff/settings/seo']) assert.match((await m.get(url)).text, /id="media-picker"/, url);
+  const t = await m.token();
+  const png = require('fs').readFileSync(require('path').join(__dirname, '..', 'public', 'brand', 'mark-64.png'));
+  const r = await m.post('/staff/media/picker-upload').set('Accept', 'application/json').field('_csrf', t).field('alt_en', 'Logo').attach('file', png, 'mark.png');
+  assert.equal(r.status, 200);
+  assert.match(r.body.url, /^\/media\/\d+$/);
+  const bad = await m.post('/staff/media/picker-upload').set('Accept', 'application/json').field('_csrf', t).attach('file', Buffer.from('not an image'), 'x.png');
+  assert.notEqual(bad.status, 200);
+  const noToken = await m.post('/staff/media/picker-upload').set('Accept', 'application/json').attach('file', png, 'mark.png');
+  assert.notEqual(noToken.status, 200);
+  const c = await staffAgent(await makeStaff({ role: 'counsellor' }));
+  assert.doesNotMatch((await c.get('/staff')).text, /id="media-picker"/);
+});

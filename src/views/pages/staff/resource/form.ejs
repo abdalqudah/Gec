@@ -47,8 +47,3 @@
 <% } %>
 <% if (row.id && canManage) { %><form method="post" action="<%= base %>/<%= row.id %>/delete" data-confirm="<%= t('resources.delete_confirm') %>" class="mt6"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="btn danger-ghost sm" type="submit"><%- icon('trash-2') %><%= t('common.delete') %></button></form><% } %>
 
-<dialog class="dialog wide" id="media-picker" aria-labelledby="media-picker-title" data-empty="<%= t('media.empty') %>">
-  <div class="dialog-head"><h2 id="media-picker-title"><%= t('media.choose') %></h2><button type="button" class="btn ghost icon-only" data-dialog-close aria-label="<%= t('common.close') %>"><%- icon('x') %></button></div>
-  <div class="dialog-body stack"><input type="search" data-media-search placeholder="<%= t('common.search') %>" aria-label="<%= t('common.search') %>"><div class="media-grid" data-media-results></div>
-  <p class="small muted mb0"><a href="/staff/media" target="_blank" rel="noopener"><%= t('media.open_library') %></a></p></div>
-</dialog>

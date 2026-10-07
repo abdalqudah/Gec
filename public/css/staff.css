@@ -134,3 +134,5 @@
 .img-slots { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
 .img-slot { display: grid; gap: 6px; align-content: start; }
 .img-slot .img-preview { aspect-ratio: 16 / 9; }
+.picker-upload { border: 1px dashed var(--line); border-radius: var(--r-lg); padding: 12px 14px; display: grid; gap: 8px; }
+.picker-upload input[type=file] { max-width: 100%; }

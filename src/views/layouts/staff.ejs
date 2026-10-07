@@ -62,6 +62,7 @@
 </div>
 <%- include('../partials/flash') %>
 <%- include('../partials/palette') %>
+<% if (can('cms.manage') || can('catalog.manage')) { %><%- include('../partials/media-picker') %><% } %>
 <script src="/js/app.js?v=<%= assetV %>" defer></script>
 <script src="/js/staff.js?v=<%= assetV %>" defer></script>
 <% (typeof pageScripts !== 'undefined' ? pageScripts : []).forEach(function (s) { %><script src="<%= s %>?v=<%= assetV %>" defer></script><% }) %>
